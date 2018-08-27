@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="department" class="spring.ex02.Department">
+		<property name="name" value="개발팀"></property>
+	</bean>
+	<bean id="employee" class="spring.ex02.Employee">
+		<property name="name" value="삼룡이"></property>
+		<property name="dept" ref="department"></property>
+	</bean>
+	
+<!-- 	Employee e = new Employee(); -->
+<!-- 	Department d = new Department(); -->
+<!-- 	d.setName("재무팀"); -->
+<!-- 	e.setName("삼룡이"); -->
+<!-- 	e.setDept(d); -->
+	<bean id="employee_2" class="spring.ex02.Employee">
+		<property name="name" value="삼룡이"></property>
+		<property name="dept" >
+			<bean class="spring.ex02.Department">
+				<property name="name" value="재무팀"></property>
+			</bean>
+		</property>
+	</bean>
+</beans>
