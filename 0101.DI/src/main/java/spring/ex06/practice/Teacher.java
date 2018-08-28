@@ -1,6 +1,5 @@
 package spring.ex06.practice;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

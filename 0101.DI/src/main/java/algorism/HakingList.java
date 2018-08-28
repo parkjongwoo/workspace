@@ -1,9 +1,14 @@
 package algorism;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class HakingList {
 
@@ -14,9 +19,8 @@ public class HakingList {
 		Branch request = getRequestBranch();
 		int max = request.left;
 		Map<String,Branch> map = new HashMap<String,Branch>();
-		Map<Branch,Integer> root = new HashMap<Branch,Integer>();
-		Map<Branch,Integer> reaf = new HashMap<Branch,Integer>();
-		Map<Branch,Integer> body = new HashMap<Branch,Integer>();
+		SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
+		SortedMap<Integer,Integer> count = new TreeMap<Integer,Integer>();
 		
 		System.out.println(request.toString());
 		for (int i = 0; i < request.right; i++) {
@@ -27,35 +31,60 @@ public class HakingList {
 				continue;
 			}
 			map.put(key, b);
-			root.put(b, Integer.valueOf(b.right));
-			reaf.put(b, Integer.valueOf(b.left));
+			if(root.get(b.right)==null)
+			{
+				List<Branch> list = new ArrayList<Branch>();
+				list.add(b);
+				root.put(b.right, list);
+			}else {
+				root.get(b.right).add(b);
+			}			
 		}
-		System.out.println("root.size()+ reaf.size():"+(root.size()+ reaf.size()));
-		boolean b = false;
-		for( Entry<String,Branch> e : map.entrySet()) {				
-			b = root.get(e.getValue()).equals(e.getValue().left);
-			if(b) {				
-				root.remove(e.getValue());
-				
-			}
-			b = reaf.get(e.getValue()).equals(e.getValue().right);
-			if(b) {				
-				reaf.remove(e.getValue());
-			}						
-			if(b) {
-				body.put(e.getValue(),e.getValue().left);
-			}
+		System.out.println("root:"+root.size());
+		Param p = new Param();
+		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {			
+			Branch b = entry.getValue().get(0);
+			if(count.get(b.right)==null)
+				count.put(b.right, 0);
+			p.startkey = b.right;
+			p.nowkey = b.right;
+			p.listidx = 0;
+			p.count = count.get(b.right);
+			p.root = root;
+			count.put(b.right, process(p));			
 		}
 		
-		
-		
-		int total = root.size()+ reaf.size()+body.size();
-		System.out.println("root.size():"+root.size()+" reaf.size():"+reaf.size()+" body.size():"+body.size());
-		System.out.println("total:"+map.size() + " | "+total);
-//		long end = new Date().getTime();
-//		System.out.println(end - start);
+		System.out.println(count);
 		showMemory();
 	}
+	
+	public void process(Param p) {
+		System.out.println("startkey:"+p.startkey+" nowkey:"+p.nowkey+" listidx:"+p.listidx+" count:"+p.count);
+		System.out.println("entry.getValue():"+p.root.get(p.nowkey));
+		p.count++;
+		
+		if(p.startkey==p.nowkey && p.count>1) {//순환일 경우 최초 컴퓨터는 해킹된 상태이므로 올린 카운트 다시 내리고 값 반환
+			p.count--;
+			return ;
+		}
+		
+		List<Branch>list = p.root.get(p.nowkey);		
+		if(list == null) {
+			p.count--;
+			return ;
+		}
+//		if(list.size()<=listidx) {//리스트 마지막 인덱스 초과시 증가한 카운트 초기화 후 반환
+//			count--;
+//			return count;
+//		}
+		
+		for(int i=0;i<list.size();i++) {
+			Branch b = list.get(p.listidx);
+			p.count = process(startkey, b.left, i, count, root);
+		}	
+		return count;
+	}
+	
 	static Runtime r = Runtime.getRuntime();
 	public static void showMemory() {
 
@@ -97,13 +126,16 @@ public class HakingList {
 		if (left == right)
 			randomIntN(max, left);
 		return right;
-	}	
-
-	public static void main(String[] args) {
-		new HakingList();
 	}
-
-	class Branch {
+	
+	public static Comparator<Branch> branchSorter = new Comparator<Branch>() {
+		@Override
+		public int compare(Branch o1, Branch o2) {
+			return o1.left-o2.left;
+		}
+	};
+	
+	class Branch{
 		public int left;
 		public int right;
 
@@ -119,5 +151,22 @@ public class HakingList {
 		public String toString() {
 			return left + " " + right;
 		}
+	}
+	class Param{
+		public int startkey;
+		public int nowkey;
+		public int listidx;
+		public int count;
+		SortedMap<Integer,List<Branch>> root;
+		public void clear() {
+			startkey = 0;
+			nowkey = 0;
+			listidx = 0;
+			count = 0;
+			root = null;
+		}
+	}
+	public static void main(String[] args) {
+		new HakingList();
 	}
 }
