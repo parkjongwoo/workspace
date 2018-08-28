@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<aop:aspectj-autoproxy/>
+	<bean id="dog" class="spring.pojo.Dog"/>
+	<bean id="cat" class="spring.pojo.Cat"/>
+	<bean id="animal" class="spring.aop.Animal"/>
+	
+<!-- 	aop사용. aop내부에는 주석 넣지 말것. 애러 발생 가능-->
+<!-- 	1.spring aop dependency 추가 -->
+<!-- 	2.beans xml에 namespace추가 -->
+<!-- 	3.aspect Class작성 -->
+<!-- 	4.aop config추가 -->
+<!-- 	<aop:config> -->
+<!-- 		<aop:aspect ref="animal"> -->
+<!-- 			<aop:pointcut expression="execution(* *.eat(..))" id="eating"/> -->
+<!-- 			<aop:before pointcut-ref="eating" method="rush"/> -->
+<!-- 			<aop:after pointcut-ref="eating" method="sleep"/> -->
+<!-- 		</aop:aspect> -->
+<!-- 	</aop:config> -->
+</beans>

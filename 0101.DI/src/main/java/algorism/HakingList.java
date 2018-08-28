@@ -1,11 +1,9 @@
-package spring.ex02;
+package algorism;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class HakingList {
 
@@ -29,20 +27,21 @@ public class HakingList {
 				continue;
 			}
 			map.put(key, b);
-			root.put(b, b.right);
-			reaf.put(b, b.left);
+			root.put(b, Integer.valueOf(b.right));
+			reaf.put(b, Integer.valueOf(b.left));
 		}
 		System.out.println("root.size()+ reaf.size():"+(root.size()+ reaf.size()));
 		boolean b = false;
-		for( Entry<String,Branch> e : map.entrySet()) {	
-//			System.out.println("e.getValue().left:"+e.getValue().left);
-//			root.get()
-			
-			if(b = root.get(e.getValue()).intValue()==e.getValue().left)
+		for( Entry<String,Branch> e : map.entrySet()) {				
+			b = root.get(e.getValue()).equals(e.getValue().left);
+			if(b) {				
 				root.remove(e.getValue());
-			if(b = reaf.get(e.getValue()).intValue()==e.getValue().right)
+				
+			}
+			b = reaf.get(e.getValue()).equals(e.getValue().right);
+			if(b) {				
 				reaf.remove(e.getValue());
-						
+			}						
 			if(b) {
 				body.put(e.getValue(),e.getValue().left);
 			}
