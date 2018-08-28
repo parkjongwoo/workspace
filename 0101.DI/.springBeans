@@ -10,6 +10,8 @@
 		<config>src/main/java/spring/ex02/property_declare.xml</config>
 		<config>src/main/java/spring/ex03/collection_declare.xml</config>
 		<config>src/main/java/spring/ex03/practice/collection_bean_practice.xml</config>
+		<config>src/main/java/spring/ex04/bean_autowire_practice.xml</config>
+		<config>src/main/java/spring/ex05/bean_annotation.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

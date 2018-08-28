@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- beans 태그에 default-autowire="true" 사용하면 각 bean에 autowire 필요없음 -->
+	
+	<!-- 주의!!!! property로 사용할 type의 bean선언이 없으면 애러!!!!!!! -->
+	
+	<!-- autowire 이용시 bean type이 여러개 선언되어 있으면 서블릿컨테이너가 혼동하여 애러발생  -->
+	<!-- autowire-candidate="false" ::: autowire 후보에서 제외 -->
+<!-- 	<bean id="spring.ex03.businessTeam" class="spring.ex03.BusinessTeam"/> -->
+	<bean id="spring.ex03.financeTeam" class="spring.ex03.FinanceTeam" autowire-candidate="false"/>
+	<bean id="spring.ex03.planningTeam" class="spring.ex03.PlanningTeam"/>
+	
+	<!-- autowire: byType : 지정한 type으로 자동 bean 생성 -->
+	<bean id="employee" class="spring.ex03.Employee" autowire="byType">
+		<property name="name" value="삼룡이"/>
+	</bean>
+</beans>

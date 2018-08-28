@@ -13,5 +13,9 @@ public abstract class BasicFurniture implements Furniture {
 		System.out.println(this.getClass().getSimpleName()+"에 내용물을 뺐습니다.");
 
 	}
-
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + " 가구입니다.";
+	}
 }

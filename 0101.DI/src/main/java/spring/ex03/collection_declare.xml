@@ -7,6 +7,8 @@
 	<bean id="spring.ex03.financeTeam" class="spring.ex03.FinanceTeam"/>
 	<bean id="spring.ex03.planningTeam" class="spring.ex03.PlanningTeam"/>		
 	
+	<!-- collection class는 각 타입에 맞는 태그를 사용하면 됨 -->
+	<!-- list= list, set=set, map= map에 entry -->
 	<bean id="company_list" class="spring.ex03.Company">
 		<property name="deptList">
 			<list>

@@ -12,5 +12,9 @@ public abstract class BasicElectronic implements Electronic {
 		System.out.println(this.getClass().getSimpleName()+"을 껐습니다.");
 
 	}
-
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + " 가전입니다.";
+	}
 }

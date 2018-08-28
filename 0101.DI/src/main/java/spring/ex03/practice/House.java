@@ -49,6 +49,12 @@ public class House {
 	public void setElectronics(Set<Electronic> electronics) {
 		this.electronics = electronics;
 	}
+
+	@Override
+	public String toString() {
+		return "House [price=" + price + ", addr=" + addr + ", furnitures=" + furnitures + ", electronics="
+				+ electronics + "]";
+	}
 	
 	
 }

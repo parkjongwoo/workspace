@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byType">
+
+	<bean id="desk" class="spring.ex03.practice.Desk" />
+	<bean id="drawer" class="spring.ex03.practice.Drawer" />
+	<bean id="wardrobe" class="spring.ex03.practice.Wardrobe" />
+
+	<bean id="tv" class="spring.ex03.practice.TV" />
+	<bean id="refrigerator" class="spring.ex03.practice.Refrigerator" />
+	<bean id="radio" class="spring.ex03.practice.Radio" />
+	<bean id="kimchRefrigerator"
+		class="spring.ex03.practice.KimchRefrigerator" />
+
+	<bean id="midle_funiture" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="desk" />
+				<ref bean="drawer" />
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<!-- collection으로 autowire를 적용해보자... 진행중 -->
+	<bean id="house_yongsan" class="spring.ex03.practice.House">
+		<constructor-arg value="yongsan" />
+		<property name="price" value="1000" />
+
+	</bean>
+
+	<bean id="house_gangnam" class="spring.ex03.practice.House">
+		<property name="price" value="10000000" />
+		<property name="addr" value="gangnam_city" />
+
+	</bean>
+
+	<bean id="house_uae_Abu_Dhabi" class="spring.ex03.practice.House">
+		<property name="price" value="999999999" />
+		<property name="addr" value="uae_Abu_Dhabi" />
+<!-- 		
+	</bean>
+</beans>

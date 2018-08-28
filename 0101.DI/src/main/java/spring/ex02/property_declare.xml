@@ -3,6 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
+	<!-- property : bean class에 정의된 멤버변수의 값 지정(주입) -->
 	<bean id="department" class="spring.ex02.Department">
 		<property name="name" value="개발팀"></property>
 	</bean>
