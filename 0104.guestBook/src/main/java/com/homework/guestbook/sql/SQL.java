@@ -2,7 +2,9 @@ package com.homework.guestbook.sql;
 
 public class SQL {
 	public static final String GUESTBOOK_SELECT_ALL =
-			"SELECT * FROM GUESTBOOK ORDER BY WRITEDATE DESC";
+			"SELECT * FROM " + 
+			"(SELECT ROWNUM RNUM,G.* FROM (SELECT * FROM GUESTBOOK ORDER BY WRITEDATE) G) " + 
+			"ORDER BY RNUM DESC";
 	public static final String GUESTBOOK_SELECT_BY_ID =
 			"SELECT * FROM GUESTBOOK WHERE NUM=?";
 	public static final String GUESTBOOK_INSERT =

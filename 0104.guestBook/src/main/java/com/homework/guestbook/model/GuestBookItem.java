@@ -6,11 +6,20 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GuestBookItem {
+	private int no;
 	private int num;
 	private String name;
 	private String subject;
 	private String content;
 	private Date writedate;
+	
+	
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
 	public int getNum() {
 		return num;
 	}

@@ -30,6 +30,7 @@ public class GuestBookDaoImpl extends BaseDao implements GuestBookDao{
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				item = new GuestBookItem();
+//				item.setNo(rs.getInt(1));
 				item.setNum(rs.getInt(1));
 				item.setName(rs.getString(2));
 				item.setSubject(rs.getString(3));
@@ -59,14 +60,16 @@ public class GuestBookDaoImpl extends BaseDao implements GuestBookDao{
 			list = new ArrayList<GuestBookItem>();
 			while(rs.next()) {				
 				GuestBookItem item = new GuestBookItem();
-				item.setNum(rs.getInt(1));
-				item.setName(rs.getString(2));
-				item.setSubject(rs.getString(3));
-				item.setContent(rs.getString(4));
-				item.setWritedate(rs.getDate(5));
+				item.setNo(rs.getInt(1));
+				item.setNum(rs.getInt(2));
+				item.setName(rs.getString(3));
+				item.setSubject(rs.getString(4));
+				item.setContent(rs.getString(5));
+				item.setWritedate(rs.getDate(6));
 				list.add(item);
 			}
 		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 		} finally {
 			closeDBObjects(rs, ps, con);

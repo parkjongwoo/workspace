@@ -1,15 +1,19 @@
 package com.homework.guestbook.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.homework.guestbook.dao.guestbook.GuestBookDao;
+import com.homework.guestbook.model.GuestBookItem;
 
 /**
  * Handles requests for the application home page.
@@ -20,36 +24,64 @@ public class GuestBookController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(GuestBookController.class);
 	
+	@Autowired
+	private GuestBookDao dao;
+	
+	public void setDao(GuestBookDao dao) {
+		this.dao = dao;
+	}
+	
+	@RequestMapping(value="/inputForm", method=RequestMethod.GET)
+	public void inputForm() {
+		System.out.println("inputForm 도착");
+	}
+	
+	@ModelAttribute("guestbookItem")
+	@RequestMapping(value="/detail", method=RequestMethod.GET)
+	public GuestBookItem detail(@RequestParam int num) {
+		GuestBookItem item = dao.selectById(num);
+		
+		return 	item;
+	}
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value="/select", method=RequestMethod.GET)
-	public void select() {
-		
-		
-		
+	@ModelAttribute("guestbookItemList")
+	@RequestMapping(value="/listPage", method=RequestMethod.GET)
+	public List<GuestBookItem> select() {
+		System.out.println("select 도착");
+		List<GuestBookItem> list = dao.selectAll();		
+		return list;	
 	}
 	
-	@RequestMapping(value="/insert", method=RequestMethod.GET)
-	public void insert() {
-		
-		
-		
+	@ModelAttribute("guestbookItemList")
+	@RequestMapping(value="/listPage", method=RequestMethod.POST)
+	public List<GuestBookItem> select2() {
+		System.out.println("select 도착");
+		List<GuestBookItem> list = dao.selectAll();		
+		return list;	
 	}
 	
-	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public void delete() {
+	@RequestMapping(value="/insert", method=RequestMethod.POST)
+	public String insert(@ModelAttribute GuestBookItem item) {
+		boolean result = dao.insert(item);
 		
-		
-		
+		return 	"forward:listPage";
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public void update() {
-		
-		
-		
+	public String update(@ModelAttribute GuestBookItem item) {
+		boolean result = dao.update(item);
+			
+		return 	"forward:listPage";
 	}
 	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(@RequestParam int num, Model model) {
+		boolean result = dao.delete(num);
+		model.addAttribute("success", result);
+		return 	"forward:listPage";
+	}
 }
 
