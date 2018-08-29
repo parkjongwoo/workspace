@@ -1,29 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	<!--  web.xml에 지정되어있는 기본 controller가 참조하는 bean 설정 파일!!!!!!!!!! -->
-	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
-	
+	<!-- web.xml에 지정되어있는 기본 최상위 controller가 참조하는 bean 설정 파일입니다!!!!!!!!!! -->
+	<!-- 본 설정파일에서 선언하는 내용은 !!! -->
+	<!-- 1.핸들러 매핑용 Bean 선언 -->
+	<!-- 2.컨트롤러 Bean 선언 -->
+	<!-- 3.뷰 리졸버 Bean 선언 -->
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- <annotation-driven />설명 -->
+	<!-- 1.annotation wiring 지원(byType) annotation들을 사용가능하도록 설정한다 -->
+	<!-- 2.HandlerMapping, HandlerAdapter 등록 -->
+	<!-- mvc namespace annotation-driven은 WebMvcConfigurationSupport Class 에 
+		등록된 \@bean annotation에 따라 -->
+	<!-- Bean선언된 RequestMappingHandlerMapping 을 가지고 HandlerMapping 설정한다 -->
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- 리소스 맵핑 선언부 -->
+	<!-- 아래선언된 내용은 -->
+	<!-- mapping 형식의 url패턴은 location 위치에서 검색해서 응답처리 한다는 내용이다. -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+
+	<!-- 뷰리졸버 선언부 -->
+	<!-- controller에서 반환해주는 뷰 이름의 힌트를 이용하여 완성된 뷰 주소를 생성해서 반환해주는 역할 -->
+	<!-- prefix + hint + suffix -->
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
-	
+
+	<!-- \@component, \@controller, \@service, \@repository annotation을 검색해서 -->
+	<!-- applicationContext에 추가해줌 -->
 	<!-- \@Controller 검색함. -->
-	<context:component-scan base-package="com.goott.myproject" />
-	
-	
-	
+	<context:component-scan
+		base-package="com.goott.myproject" />
+	<context:component-scan 
+		base-package="com.mappingtest" />
 </beans:beans>

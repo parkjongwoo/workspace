@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.SortedMap;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class HakingList {
@@ -21,6 +23,7 @@ public class HakingList {
 		Map<String,Branch> map = new HashMap<String,Branch>();
 		SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
 		SortedMap<Integer,Integer> count = new TreeMap<Integer,Integer>();
+		StringBuffer sb = new StringBuffer();
 		
 		System.out.println(request.toString());
 		for (int i = 0; i < request.right; i++) {
@@ -31,6 +34,7 @@ public class HakingList {
 				continue;
 			}
 			map.put(key, b);
+			sb.append(key).append('\n');
 			if(root.get(b.right)==null)
 			{
 				List<Branch> list = new ArrayList<Branch>();
@@ -40,18 +44,50 @@ public class HakingList {
 				root.get(b.right).add(b);
 			}			
 		}
-		System.out.println("root:"+root.size());
-		Param p = new Param();
+		System.out.println(sb);
+//		System.out.println("=================");
+//		System.out.println("root:"+root);
+		
+		sb.setLength(0);
+		sb = null;
+		map.clear();
+		map = null;
+//		Param p = new Param();
+		Stack<Branch> workList = new Stack<Branch>();
 		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {			
-			Branch b = entry.getValue().get(0);
-			if(count.get(b.right)==null)
-				count.put(b.right, 0);
-			p.startkey = b.right;
-			p.nowkey = b.right;
-			p.listidx = 0;
-			p.count = count.get(b.right);
-			p.root = root;
-			count.put(b.right, process(p));			
+			// add work stack
+			List<Branch> rootItemlist = entry.getValue();
+			rootItemlist.sort(branchSorter);
+			for(Branch b : rootItemlist) {
+				workList.push(b);
+			}
+			boolean first = true;
+			while(true) {
+				if(workList.isEmpty())
+					break;
+				Branch item = workList.pop();
+				if(!first) {
+					if(item.right == entry.getKey()) 
+						break;					
+				}
+				first = false;
+				if(count.get(Integer.valueOf(item.right)) == null || count.get(Integer.valueOf(item.right)) == 0) {
+					count.put(Integer.valueOf(item.right),0);
+				}
+				count.put(Integer.valueOf(item.right), count.get(Integer.valueOf(item.right))+1);
+				System.out.println("count:"+count);
+				
+				List<Branch> nextBranchItemlist = root.get(item.right);
+				System.out.println("nextBranchItemlist:"+nextBranchItemlist);
+				if(nextBranchItemlist != null) {
+					for(Branch b : nextBranchItemlist) {
+						workList.push(b);
+					}					
+				}
+//				else {
+//					count.put(item.left, count.get(item.left)-1);
+//				}
+			}			
 		}
 		
 		System.out.println(count);
@@ -80,9 +116,9 @@ public class HakingList {
 		
 		for(int i=0;i<list.size();i++) {
 			Branch b = list.get(p.listidx);
-			p.count = process(startkey, b.left, i, count, root);
+//			p.count = process(p);
 		}	
-		return count;
+//		return p.count;
 	}
 	
 	static Runtime r = Runtime.getRuntime();
@@ -108,7 +144,8 @@ public class HakingList {
 	}
 
 	private Branch getRequestBranch() {
-		return new Branch(randomIntN(10000), randomIntN(100000));
+//		return new Branch(randomIntN(10000), randomIntN(100000));
+		return new Branch(randomIntN(10), randomIntN(50));
 	}
 
 	private Branch getBranch(int max) {
@@ -116,15 +153,16 @@ public class HakingList {
 		int right = randomIntN(max, left);
 		return new Branch(left, right);
 	}
-	
+	Random random = new Random();
 	private int randomIntN(int max) {
-		return (int) (Math.round(Math.random() * max) + 1);
+		return random.nextInt(max)+1;
 	}	
 
 	private int randomIntN(int max, int left) {
 		int right = randomIntN(max);
+//		System.out.println("left:"+left+" right:"+right);
 		if (left == right)
-			randomIntN(max, left);
+			right = randomIntN(max, left);
 		return right;
 	}
 	
