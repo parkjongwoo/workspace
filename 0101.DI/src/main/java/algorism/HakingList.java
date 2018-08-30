@@ -74,23 +74,24 @@ public class HakingList {
 				if(workList.isEmpty())
 					break;
 				Branch item = workList.pop();
-				if(!first) {
-					System.out.println("history:"+history);
-					if(history.size()>0 && (history.contains(item.right) || history.contains(entry.getKey()))) {
-						System.out.println("history에 존재하는 루트 탐색종료");
-						history.clear();
-						first=true;
-						continue;					
-					}
-				}			
-				history.add(item.right);
-				first = false;
 				right = Integer.valueOf(item.right);
 				left = Integer.valueOf(item.left);
 				if(hackList.get(right) == null) {
 					hackList.put(right,new HashSet<Integer>());
 				}
 				hackList.get(right).add(left);
+//				if(!first) {
+					System.out.println("history:"+history);
+					if(history.size()>0 && (history.contains(item.left) || item.left == entry.getKey())) {
+						System.out.println("history에 존재하는 루트 탐색종료");
+						history.clear();
+						first=true;
+						continue;					
+					}
+//				}			
+				history.add(item.left);
+				first = false;
+				
 //				System.out.println("count:"+count);
 				
 				List<Branch> nextBranchItemlist = root.get(left);
