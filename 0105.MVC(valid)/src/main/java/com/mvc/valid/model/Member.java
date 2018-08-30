@@ -18,7 +18,7 @@ public class Member {
 	private String id;
 	@Size(min=4,max=10,message="패스워드 형식이 아님")
 	private String password;
-	@Email(regexp="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z] {2,3}$",message="이메일 형식이 아님")
+	@Email(regexp="^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$",message="이메일 형식이 아님")
 	private String email;
 	public String getId() {
 		return id;
