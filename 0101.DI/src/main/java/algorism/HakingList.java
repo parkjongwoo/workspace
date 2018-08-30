@@ -15,19 +15,20 @@ import java.util.Stack;
 import java.util.TreeMap;
 
 public class HakingList {
-
+	
+	Map<String,Branch> map = new HashMap<String,Branch>();
+	SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
+	SortedMap<Integer,Set<Integer>> hackList = new TreeMap<Integer,Set<Integer>>();
+	StringBuffer sb = new StringBuffer();
+	
 	public HakingList() {
 		showMemory();
 //		long start = new Date().getTime();
-//		System.out.println(start);		
+//		//System.out.println(start);		
 		Branch request = getRequestBranch();
-		int max = request.left;
-		Map<String,Branch> map = new HashMap<String,Branch>();
-		SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
-		SortedMap<Integer,Set<Integer>> hackList = new TreeMap<Integer,Set<Integer>>();
-		StringBuffer sb = new StringBuffer();
+		int max = request.left;		
 		
-		System.out.println(request.toString());
+		//System.out.println(request.toString());
 		for (int i = 0; i < request.right; i++) {
 			Branch b = getBranch(max);
 			String key = b.toString();
@@ -47,8 +48,8 @@ public class HakingList {
 			}			
 		}
 		System.out.println(sb);
-		System.out.println("=================");
-		System.out.println("root:"+root);
+		//System.out.println("=================");
+		//System.out.println("root:"+root);
 		
 		sb.setLength(0);
 		sb = null;
@@ -56,7 +57,7 @@ public class HakingList {
 		map = null;
 //		Param p = new Param();
 		Stack<Branch> workList = new Stack<Branch>();
-		Set<Integer> history = new HashSet<Integer>();
+		Stack<Integer> history = new Stack<Integer>();
 		boolean first = true;
 		Integer right;
 		Integer left;
@@ -65,45 +66,67 @@ public class HakingList {
 			List<Branch> rootItemlist = entry.getValue();
 			
 			for(Branch b : rootItemlist) {
+				if(b.left == entry.getKey())
+					continue;
 				workList.push(b);
 			}
-//			System.out.println("workList:"+workList);
+//			//System.out.println("workList:"+workList);
 			first = true;
 			
 			while(true) {
-				if(workList.isEmpty())
+				if(workList.isEmpty()) {//모든 검색 루트 완료
+					history.clear();
 					break;
-				Branch item = workList.pop();
-				right = Integer.valueOf(item.right);
-				left = Integer.valueOf(item.left);
-				if(hackList.get(right) == null) {
-					hackList.put(right,new HashSet<Integer>());
 				}
-				hackList.get(right).add(left);
+				//System.out.println("workList:"+workList);
+				Branch item = workList.pop();
+				
+				
 //				if(!first) {
-					System.out.println("history:"+history);
-					if(history.size()>0 && (history.contains(item.left) || item.left == entry.getKey())) {
-						System.out.println("history에 존재하는 루트 탐색종료");
-						history.clear();
+//					//System.out.println("history:"+history);
+					if((history.size()>0 && history.contains(item.left)) || item.left == entry.getKey()) {
+						//System.out.println("순환발견. 탐색 종료. 히스토리 정리");
+						if(workList.isEmpty()) {
+							history.clear();
+							break;
+						}else {
+							clear(history,workList.lastElement());						
+						}
 						first=true;
 						continue;					
 					}
 //				}			
-				history.add(item.left);
+				history.push(item.right);
 				first = false;
 				
-//				System.out.println("count:"+count);
+				right = Integer.valueOf(item.right);
+				left = Integer.valueOf(item.left);
+				if(hackList.get(entry.getKey()) == null) {
+					//System.out.println("결과 맵에 이번 "+entry.getKey()+"루트의 저장소가 없음. 생성.");
+					hackList.put(entry.getKey(),new HashSet<Integer>());
+				}
+				hackList.get(entry.getKey()).add(left);
+				//System.out.println("hackList:"+hackList);
+//				//System.out.println("count:"+count);
 				
 				List<Branch> nextBranchItemlist = root.get(left);
-//				System.out.println("nextBranchItemlist:"+nextBranchItemlist);
+				//System.out.println("nextBranchItemlist:"+nextBranchItemlist);
 				if(nextBranchItemlist != null) {
 					for(Branch b : nextBranchItemlist) {
+						if(b.left == entry.getKey() || (history.size()>0 && history.contains(item.left)))
+							continue;
 						workList.push(b);
 					}					
 				}
-//				else {
-//					count.put(item.left, count.get(item.left)-1);
-//				}
+				else {
+					//System.out.println("현 레벨 마지막 요소. 히스토리 정리");
+					if(workList.isEmpty()) {
+						history.clear();
+						break;
+					}else {
+						clear(history,workList.lastElement());						
+					}
+				}
 			}			
 		}
 		
@@ -111,9 +134,18 @@ public class HakingList {
 		showMemory();
 	}
 	
+	private void clear(Stack<Integer> history, Branch next) {
+		while(history.isEmpty()) {
+			Integer deleted = history.pop();
+			if(deleted == next.right) {//이전 히스토리 찾음
+				return;
+			}
+		}
+	}
+
 	public void process(Param p) {
-		System.out.println("startkey:"+p.startkey+" nowkey:"+p.nowkey+" listidx:"+p.listidx+" count:"+p.count);
-		System.out.println("entry.getValue():"+p.root.get(p.nowkey));
+		//System.out.println("startkey:"+p.startkey+" nowkey:"+p.nowkey+" listidx:"+p.listidx+" count:"+p.count);
+		//System.out.println("entry.getValue():"+p.root.get(p.nowkey));
 		p.count++;
 		
 		if(p.startkey==p.nowkey && p.count>1) {//순환일 경우 최초 컴퓨터는 해킹된 상태이므로 올린 카운트 다시 내리고 값 반환
@@ -161,8 +193,8 @@ public class HakingList {
 	}
 
 	private Branch getRequestBranch() {
-//		return new Branch(randomIntN(10000), randomIntN(100000));
-		return new Branch(randomIntN(10), randomIntN(20));
+		return new Branch(randomIntN(10000), randomIntN(100000));
+//		return new Branch(randomIntN(10), randomIntN(20));
 	}
 
 	private Branch getBranch(int max) {
@@ -177,7 +209,7 @@ public class HakingList {
 
 	private int randomIntN(int max, int left) {
 		int right = randomIntN(max);
-//		System.out.println("left:"+left+" right:"+right);
+//		//System.out.println("left:"+left+" right:"+right);
 		if (left == right)
 			right = randomIntN(max, left);
 		return right;
