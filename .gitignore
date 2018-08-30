@@ -5,4 +5,13 @@
 **/.classpath/
 **/.project/
 **/target/
-
+.classpath/
+.project/
+.settings/
+.recommenders/
+.metadata/
+.classpath
+.project
+.settings
+.recommenders
+.metadata
