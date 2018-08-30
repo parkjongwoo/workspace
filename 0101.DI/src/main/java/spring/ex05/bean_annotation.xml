@@ -5,7 +5,8 @@
 	xsi:schemaLocation="
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
+	
+	<!-- xml에 선언했던  여러 기능(autowire,require등 api참조)을 annotation 으로 사용할 수 있게 -->
 	<context:annotation-config/>
 	
 	

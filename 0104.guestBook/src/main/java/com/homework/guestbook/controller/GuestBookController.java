@@ -64,23 +64,26 @@ public class GuestBookController {
 	}
 	
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public String insert(@ModelAttribute GuestBookItem item) {
+	public String insert(@ModelAttribute GuestBookItem item, Model model) {
 		boolean result = dao.insert(item);
-		
+		String msg = result?"추가되었습니다.":"추가 실패하였습니다.";
+		model.addAttribute("msg", msg);
 		return 	"forward:listPage";
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(@ModelAttribute GuestBookItem item) {
+	public String update(@ModelAttribute GuestBookItem item, Model model) {
 		boolean result = dao.update(item);
-			
+		String msg = result?"변경되었습니다.":"변경 실패하였습니다.";
+		model.addAttribute("msg", msg);
 		return 	"forward:listPage";
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public String delete(@RequestParam int num, Model model) {
 		boolean result = dao.delete(num);
-		model.addAttribute("success", result);
+		String msg = result?"삭제되었습니다.":"삭제 실패하였습니다.";
+		model.addAttribute("msg", msg);
 		return 	"forward:listPage";
 	}
 }

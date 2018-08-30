@@ -4,10 +4,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -22,7 +24,7 @@ public class HakingList {
 		int max = request.left;
 		Map<String,Branch> map = new HashMap<String,Branch>();
 		SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
-		SortedMap<Integer,Integer> count = new TreeMap<Integer,Integer>();
+		SortedMap<Integer,Set<Integer>> hackList = new TreeMap<Integer,Set<Integer>>();
 		StringBuffer sb = new StringBuffer();
 		
 		System.out.println(request.toString());
@@ -45,8 +47,8 @@ public class HakingList {
 			}			
 		}
 		System.out.println(sb);
-//		System.out.println("=================");
-//		System.out.println("root:"+root);
+		System.out.println("=================");
+		System.out.println("root:"+root);
 		
 		sb.setLength(0);
 		sb = null;
@@ -54,31 +56,45 @@ public class HakingList {
 		map = null;
 //		Param p = new Param();
 		Stack<Branch> workList = new Stack<Branch>();
+		Set<Integer> history = new HashSet<Integer>();
+		boolean first = true;
+		Integer right;
+		Integer left;
 		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {			
 			// add work stack
 			List<Branch> rootItemlist = entry.getValue();
-			rootItemlist.sort(branchSorter);
+			
 			for(Branch b : rootItemlist) {
 				workList.push(b);
 			}
-			boolean first = true;
+//			System.out.println("workList:"+workList);
+			first = true;
+			
 			while(true) {
 				if(workList.isEmpty())
 					break;
 				Branch item = workList.pop();
 				if(!first) {
-					if(item.right == entry.getKey()) 
-						break;					
-				}
+					System.out.println("history:"+history);
+					if(history.size()>0 && (history.contains(item.right) || history.contains(entry.getKey()))) {
+						System.out.println("history에 존재하는 루트 탐색종료");
+						history.clear();
+						first=true;
+						continue;					
+					}
+				}			
+				history.add(item.right);
 				first = false;
-				if(count.get(Integer.valueOf(item.right)) == null || count.get(Integer.valueOf(item.right)) == 0) {
-					count.put(Integer.valueOf(item.right),0);
+				right = Integer.valueOf(item.right);
+				left = Integer.valueOf(item.left);
+				if(hackList.get(right) == null) {
+					hackList.put(right,new HashSet<Integer>());
 				}
-				count.put(Integer.valueOf(item.right), count.get(Integer.valueOf(item.right))+1);
-				System.out.println("count:"+count);
+				hackList.get(right).add(left);
+//				System.out.println("count:"+count);
 				
-				List<Branch> nextBranchItemlist = root.get(item.right);
-				System.out.println("nextBranchItemlist:"+nextBranchItemlist);
+				List<Branch> nextBranchItemlist = root.get(left);
+//				System.out.println("nextBranchItemlist:"+nextBranchItemlist);
 				if(nextBranchItemlist != null) {
 					for(Branch b : nextBranchItemlist) {
 						workList.push(b);
@@ -90,7 +106,7 @@ public class HakingList {
 			}			
 		}
 		
-		System.out.println(count);
+		System.out.println("결과:\n"+hackList);
 		showMemory();
 	}
 	
@@ -145,7 +161,7 @@ public class HakingList {
 
 	private Branch getRequestBranch() {
 //		return new Branch(randomIntN(10000), randomIntN(100000));
-		return new Branch(randomIntN(10), randomIntN(50));
+		return new Branch(randomIntN(10), randomIntN(20));
 	}
 
 	private Branch getBranch(int max) {

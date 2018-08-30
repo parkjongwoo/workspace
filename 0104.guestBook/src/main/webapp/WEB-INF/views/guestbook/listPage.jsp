@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +22,13 @@
 	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 	crossorigin="anonymous"></script>
+	
+	
+<script type="text/javascript">
+	$(document).ready(function() {
+		<c:if test="${not empty msg}">alert("${msg}");</c:if>
+	});
+</script>
 </head>
 <body>
 	<div class="container">
@@ -28,20 +37,23 @@
 			<thead>
 				<tr>
 					<th scope="col">번호</th>
+					<th scope="col">글번호</th>
 					<th scope="col">제목</th>
 					<th scope="col">작성자</th>
 					<th scope="col">작성일자</th>
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach var="item" items="${guestbookItemList}">
-				<tr>
-					<th scope="row">${item.no}</th>
-					<td>${item.subject}</td>
-					<td><a href="detail?num=${item.num }">${item.name}</a></td>
-					<td><fmt:formatDate value="${item.writedate}" pattern="yyyy-MM-dd"/></td>
-				</tr>			
-			</c:forEach>
+				<c:forEach var="item" items="${guestbookItemList}">
+					<tr>
+						<th scope="row">${item.no}</th>
+						<td>${item.num}</td>
+						<td>${item.subject}</td>
+						<td><a href="detail?num=${item.num }">${item.name}</a></td>
+						<td><fmt:formatDate value="${item.writedate}"
+								pattern="yyyy-MM-dd" /></td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 		<a href="inputForm">새글쓰기</a>

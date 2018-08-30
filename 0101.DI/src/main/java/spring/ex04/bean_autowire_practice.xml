@@ -4,6 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!-- beans 태그에 default-autowire="true" 사용하면 각 bean에 autowire 필요없음 -->
 	
+	<!-- autowire란:: 등록할 bean의 property를 자동으로 채우는데 그 기준은 -->
+	<!-- type,id등 제시한 기준에 맞는 사전에 등록된 bean 중에서 검색한다 -->
+	
 	<!-- 주의!!!! property로 사용할 type의 bean선언이 없으면 애러!!!!!!! -->
 	
 	<!-- autowire 이용시 bean type이 여러개 선언되어 있으면 서블릿컨테이너가 혼동하여 애러발생  -->
