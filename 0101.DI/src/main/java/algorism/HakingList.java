@@ -2,7 +2,6 @@ package algorism;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,35 +9,45 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.Stack;
-import java.util.TreeMap;
 
 public class HakingList {
+	//개념설명
+	//결과 작성 > 시작점 목록 작성 > 시작점별 순환 > 시작점 신뢰목록 저장> 한개의 신뢰 정보를 다음 시작점 목록으로 변경 > 신뢰정보저장 > 시작점 순환
 	
-	Map<String,Branch> map = new HashMap<String,Branch>();
-	SortedMap<Integer,List<Branch>> root = new TreeMap<Integer,List<Branch>>();
-	SortedMap<Integer,Set<Integer>> hackList = new TreeMap<Integer,Set<Integer>>();
-	StringBuffer sb = new StringBuffer();
+	//로직 설명
+	//1. 출력용 map을 작성한다. map은 출력문자열을 키로, 좌항,우항의 숫자조합으로 이루어진 Branch를 값으로 갖는다.
+	//2. 1과 동시에 시작점 map을 작성한다. 시작점map은 우항에 등록된 번호를 키로, 해당 Branch의 List를 값으로 갖는다. 즉 시작점별 Branch의 List.
+	//3. 시작점별로 순환하며 work Branch stack에 해당 시작점map의 Branch List를 저장한다.
+	//4. stack에서 Branch를 꺼낸다.
+	//5. 4번Branch의 좌우항으로 결과 map에 키는 Branch의 우항, 값은 좌항의 Set으로하고 값을 추가한다. 
+	//6. 4번 Branch의 우항을 history stack에 저장한고, 좌항을 시작점map에서 찾아 work stack에 저장한다.
+	//7. 4,5,6을 순환한다. 순환 종료는 Branch stack이 비었을 때 한다. 
+	//8. 5번 실행전 4번Branch의 좌항이 history 또는 시작점에 포함된 경우 순환되는 것이므로 5,6실행을 뛰어넘어 4항부터 다시 실행한다.
+	
+	Map<String,Branch> map = new HashMap<String,Branch>(); // 관계목록 출력위한 키 조합
+	Map<Integer,List<Branch>> root = new HashMap<Integer,List<Branch>>();//우변에 한번이라도 있어 시작가능한 번호의 Branch목록
+	Map<Integer,Set<Integer>> hackList = new HashMap<Integer,Set<Integer>>();//각 시작가능한 번호별 신뢰관계 목록
+	StringBuffer sb = new StringBuffer();//신뢰관계 목록 출력폼
 	
 	public HakingList() {
 		showMemory();
 //		long start = new Date().getTime();
 //		//System.out.println(start);		
-		Branch request = getRequestBranch();
-		int max = request.left;		
+		Branch request = getRequestBranch();//컴퓨터 번호갯수, 신뢰관계갯수
+		int max = request.left;		//컴퓨터번호의 발생가능 최대치
 		
-		//System.out.println(request.toString());
-		for (int i = 0; i < request.right; i++) {
-			Branch b = getBranch(max);
-			String key = b.toString();
-			if (map.get(key) != null) {
+		System.out.println(request.toString());
+		for (int i = 0; i < request.right; i++) {// 신뢰관계 갯수만큼 순환
+			Branch b = getBranch(max);//신뢰받는 컴퓨터와 신뢰하는 컴퓨터가 동일하지 않게 랜덤 발생
+			String key = b.toString();//"신뢰하는 컴퓨터(빈칸)신뢰받는 컴퓨터" 형식으로 키저장 
+			if (map.get(key) != null) {//기존에 있는 신뢰관계라면 다시 실행
 				i--;
 				continue;
 			}
-			map.put(key, b);
-			sb.append(key).append('\n');
-			if(root.get(b.right)==null)
+			map.put(key, b);//관계저장
+			sb.append(key).append('\n');//출력폼 저장
+			if(root.get(b.right)==null)//
 			{
 				List<Branch> list = new ArrayList<Branch>();
 				list.add(b);
@@ -55,23 +64,20 @@ public class HakingList {
 		sb = null;
 		map.clear();
 		map = null;
-//		Param p = new Param();
 		Stack<Branch> workList = new Stack<Branch>();
 		Stack<Integer> history = new Stack<Integer>();
-		boolean first = true;
-		Integer right;
+//		Integer right;
 		Integer left;
-		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {			
-			// add work stack
+		Integer start;
+//		boolean first = true;
+		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {	
 			List<Branch> rootItemlist = entry.getValue();
-			
+			start = entry.getKey();
 			for(Branch b : rootItemlist) {
-				if(b.left == entry.getKey())
+				if(b.left == start)
 					continue;
 				workList.push(b);
 			}
-//			//System.out.println("workList:"+workList);
-			first = true;
 			
 			while(true) {
 				if(workList.isEmpty()) {//모든 검색 루트 완료
@@ -81,53 +87,51 @@ public class HakingList {
 				//System.out.println("workList:"+workList);
 				Branch item = workList.pop();
 				
-				
-//				if(!first) {
-//					//System.out.println("history:"+history);
-					if((history.size()>0 && history.contains(item.left)) || item.left == entry.getKey()) {
-						//System.out.println("순환발견. 탐색 종료. 히스토리 정리");
-						if(workList.isEmpty()) {
-							history.clear();
-							break;
-						}else {
-							clear(history,workList.lastElement());						
-						}
-						first=true;
-						continue;					
+				if((history.size()>0 && history.contains(item.left)) || item.left == start) {
+					//System.out.println("순환발견. 탐색 종료. 히스토리 정리");
+					if(!workList.isEmpty()) {
+						clear(history,workList.lastElement());
 					}
-//				}			
+					continue;					
+				}	
 				history.push(item.right);
-				first = false;
 				
-				right = Integer.valueOf(item.right);
+//				right = Integer.valueOf(item.right);
 				left = Integer.valueOf(item.left);
-				if(hackList.get(entry.getKey()) == null) {
-					//System.out.println("결과 맵에 이번 "+entry.getKey()+"루트의 저장소가 없음. 생성.");
-					hackList.put(entry.getKey(),new HashSet<Integer>());
+				
+				if(hackList.get(start) == null) {
+					hackList.put(start,new HashSet<Integer>());
+				}				
+				
+				hackList.get(start).add(left);
+				
+				Set<Integer> complete = hackList.get(left);
+				if(complete != null) {
+					System.out.println("start:"+start+"left:"+left+ " complete:"+complete.toString());
+					if(complete.size()>=max)
+					for(Integer i : complete) {
+						hackList.get(start).add(i);
+					}
+					continue;
 				}
-				hackList.get(entry.getKey()).add(left);
-				//System.out.println("hackList:"+hackList);
-//				//System.out.println("count:"+count);
 				
 				List<Branch> nextBranchItemlist = root.get(left);
 				//System.out.println("nextBranchItemlist:"+nextBranchItemlist);
 				if(nextBranchItemlist != null) {
 					for(Branch b : nextBranchItemlist) {
-						if(b.left == entry.getKey() || (history.size()>0 && history.contains(item.left)))
+						if(b.left == start || (history.size()>0 && history.contains(item.left)))
 							continue;
 						workList.push(b);
 					}					
 				}
 				else {
-					//System.out.println("현 레벨 마지막 요소. 히스토리 정리");
-					if(workList.isEmpty()) {
-						history.clear();
-						break;
-					}else {
-						clear(history,workList.lastElement());						
+					if(!workList.isEmpty()) {
+						clear(history,workList.lastElement());
 					}
 				}
-			}			
+			}
+			System.out.println("hackList:"+hackList);
+//			first=false;
 		}
 		
 		System.out.println("결과:\n"+hackList);
@@ -143,32 +147,7 @@ public class HakingList {
 		}
 	}
 
-	public void process(Param p) {
-		//System.out.println("startkey:"+p.startkey+" nowkey:"+p.nowkey+" listidx:"+p.listidx+" count:"+p.count);
-		//System.out.println("entry.getValue():"+p.root.get(p.nowkey));
-		p.count++;
-		
-		if(p.startkey==p.nowkey && p.count>1) {//순환일 경우 최초 컴퓨터는 해킹된 상태이므로 올린 카운트 다시 내리고 값 반환
-			p.count--;
-			return ;
-		}
-		
-		List<Branch>list = p.root.get(p.nowkey);		
-		if(list == null) {
-			p.count--;
-			return ;
-		}
-//		if(list.size()<=listidx) {//리스트 마지막 인덱스 초과시 증가한 카운트 초기화 후 반환
-//			count--;
-//			return count;
-//		}
-		
-		for(int i=0;i<list.size();i++) {
-			Branch b = list.get(p.listidx);
-//			p.count = process(p);
-		}	
-//		return p.count;
-	}
+	
 	
 	static Runtime r = Runtime.getRuntime();
 	public static void showMemory() {
@@ -193,8 +172,9 @@ public class HakingList {
 	}
 
 	private Branch getRequestBranch() {
-		return new Branch(randomIntN(10000), randomIntN(100000));
-//		return new Branch(randomIntN(10), randomIntN(20));
+//		return new Branch(randomIntN(10000), randomIntN(100000));
+//		return new Branch(randomIntN(100), randomIntN(200));
+		return new Branch(100, 200);
 	}
 
 	private Branch getBranch(int max) {
@@ -215,12 +195,6 @@ public class HakingList {
 		return right;
 	}
 	
-	public static Comparator<Branch> branchSorter = new Comparator<Branch>() {
-		@Override
-		public int compare(Branch o1, Branch o2) {
-			return o1.left-o2.left;
-		}
-	};
 	
 	class Branch{
 		public int left;
@@ -239,20 +213,7 @@ public class HakingList {
 			return left + " " + right;
 		}
 	}
-	class Param{
-		public int startkey;
-		public int nowkey;
-		public int listidx;
-		public int count;
-		SortedMap<Integer,List<Branch>> root;
-		public void clear() {
-			startkey = 0;
-			nowkey = 0;
-			listidx = 0;
-			count = 0;
-			root = null;
-		}
-	}
+	
 	public static void main(String[] args) {
 		new HakingList();
 	}
