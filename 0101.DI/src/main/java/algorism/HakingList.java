@@ -104,7 +104,7 @@ public class HakingList {
 				}				
 				
 				hackList.get(start).add(left);
-				
+				//
 				Set<Integer> complete = hackList.get(left);
 				if(complete != null) {
 					System.out.println("start:"+start+"left:"+left+ " complete:"+complete.toString());
