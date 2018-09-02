@@ -28,16 +28,17 @@ public class HakingList {
 	Map<String,Branch> map = new HashMap<String,Branch>(); // 관계목록 출력위한 키 조합
 	Map<Integer,List<Branch>> root = new HashMap<Integer,List<Branch>>();//우변에 한번이라도 있어 시작가능한 번호의 Branch목록
 	Map<Integer,Set<Integer>> hackList = new HashMap<Integer,Set<Integer>>();//각 시작가능한 번호별 신뢰관계 목록
+	Set<Integer> allnum = new HashSet<Integer>();
 	StringBuffer sb = new StringBuffer();//신뢰관계 목록 출력폼
 	
 	public HakingList() {
 		showMemory();
 //		long start = new Date().getTime();
-//		//System.out.println(start);		
+//		////System.out.println(start);		
 		Branch request = getRequestBranch();//컴퓨터 번호갯수, 신뢰관계갯수
 		int max = request.left;		//컴퓨터번호의 발생가능 최대치
 		
-		System.out.println(request.toString());
+		//System.out.println(request.toString());
 		for (int i = 0; i < request.right; i++) {// 신뢰관계 갯수만큼 순환
 			Branch b = getBranch(max);//신뢰받는 컴퓨터와 신뢰하는 컴퓨터가 동일하지 않게 랜덤 발생
 			String key = b.toString();//"신뢰하는 컴퓨터(빈칸)신뢰받는 컴퓨터" 형식으로 키저장 
@@ -46,49 +47,54 @@ public class HakingList {
 				continue;
 			}
 			map.put(key, b);//관계저장
+			allnum.add(b.left);//전체 컴퓨터 번호 저장
+			allnum.add(b.right);
 			sb.append(key).append('\n');//출력폼 저장
-			if(root.get(b.right)==null)//
+			if(root.get(b.right)==null)//리스트 저장소가 없으면
 			{
-				List<Branch> list = new ArrayList<Branch>();
-				list.add(b);
-				root.put(b.right, list);
+				List<Branch> list = new ArrayList<Branch>();//리스트만들고
+				list.add(b);//리스트에 branch추가
+				root.put(b.right, list);//해당 리스트 루트변수에 저장
 			}else {
-				root.get(b.right).add(b);
+				root.get(b.right).add(b);//있는 리스트에 branch 저장
 			}			
 		}
-		System.out.println(sb);
-		//System.out.println("=================");
-		//System.out.println("root:"+root);
+		System.out.println(sb);//신뢰 목록 출력
+		////System.out.println("=================");
+		////System.out.println("root:"+root);
 		
 		sb.setLength(0);
-		sb = null;
+//		sb = null;
 		map.clear();
-		map = null;
-		Stack<Branch> workList = new Stack<Branch>();
-		Stack<Integer> history = new Stack<Integer>();
+		map = null;//신뢰 목록 생성작업용 저장소 삭제
+		
+		int totalComcnt = allnum.size();//실제 생성된 컴퓨터 번호의 총 대수
+		allnum.clear();
+		allnum = null;
+		Stack<Branch> workList = new Stack<Branch>();//카운팅 작업 목록 저장용 변수(카운트에 추가할 신뢰정보를 쌓고 한개씩 확인하며 카운팅)
+		Stack<Integer> history = new Stack<Integer>();//히스토리 저장 변수(뎁스가 올라갈때마다 - 즉, 다음 신뢰정보가 추가될 경우- 우변 번호가 추가됨.순환관계 체크용)
 //		Integer right;
-		Integer left;
-		Integer start;
+		Integer left;//좌항 신뢰 하는 컴퓨터 번호
+		Integer start;//우항 신뢰 받는 컴퓨터 번호
 //		boolean first = true;
-		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {	
-			List<Branch> rootItemlist = entry.getValue();
-			start = entry.getKey();
+		for(Entry<Integer,List<Branch>> entry : root.entrySet()) {	//우항에 포함된 전체 컴퓨터번호 목록을 순환
+			List<Branch> rootItemlist = entry.getValue();//이번 번호의 최상위 신뢰 목록
+			start = entry.getKey();//이번 최상위 신뢰대상 번호
 			for(Branch b : rootItemlist) {
-				if(b.left == start)
+				if(b.left == start)//right,left동일하면 제외
 					continue;
-				workList.push(b);
+				workList.push(b);//이번회차의 루트 목록 작성
 			}
 			
-			while(true) {
+			while(true) {//이번회 workList가 비워지거나 (검색완료), 이번 신뢰대상 컴퓨터가 모든 컴퓨터에게 신뢰받는 경우 순환 종료
 				if(workList.isEmpty()) {//모든 검색 루트 완료
-					history.clear();
 					break;
 				}
-				//System.out.println("workList:"+workList);
+				////System.out.println("workList:"+workList);
 				Branch item = workList.pop();
 				
 				if((history.size()>0 && history.contains(item.left)) || item.left == start) {
-					//System.out.println("순환발견. 탐색 종료. 히스토리 정리");
+					////System.out.println("순환발견. 탐색 종료. 히스토리 정리");
 					if(!workList.isEmpty()) {
 						clear(history,workList.lastElement());
 					}
@@ -107,20 +113,32 @@ public class HakingList {
 				//aa
 				Set<Integer> complete = hackList.get(left);
 				if(complete != null) {
-					System.out.println("start:"+start+"left:"+left+ " complete:"+complete.toString());
-					if(complete.size()>=max)
+					//System.out.println("start:"+start+"left:"+left+ " complete:"+complete.toString());		
+					
 					for(Integer i : complete) {
+						if(start == i)continue;
 						hackList.get(start).add(i);
 					}
-					continue;
+					
+					if(hackList.get(start).size()>=totalComcnt-1) {
+						
+						break;
+					}
+					else {
+						if(!workList.isEmpty()) {
+							clear(history,workList.lastElement());
+						}
+						continue;
+					}
 				}
 				
 				List<Branch> nextBranchItemlist = root.get(left);
-				//System.out.println("nextBranchItemlist:"+nextBranchItemlist);
+				////System.out.println("nextBranchItemlist:"+nextBranchItemlist);
 				if(nextBranchItemlist != null) {
 					for(Branch b : nextBranchItemlist) {
-						if(b.left == start || (history.size()>0 && history.contains(item.left)))
+						if(b.left == start || (history.size()>0 && history.contains(item.left))) {							
 							continue;
+						}
 						workList.push(b);
 					}					
 				}
@@ -130,14 +148,26 @@ public class HakingList {
 					}
 				}
 			}
-			System.out.println("hackList:"+hackList);
+			workList.clear();
+			history.clear();
+			
+//			//System.out.println("hackList:"+hackList);
+			
 //			first=false;
 		}
 		
-		System.out.println("결과:\n"+hackList);
+		for(Entry<Integer,Set<Integer>> e : hackList.entrySet()) {
+			sb.append(e.getKey()).append(':').append(e.getValue().size()).append('\n');
+		}
+		System.out.println("result======================\n"+sb.toString());
 		showMemory();
 	}
 	
+	/**
+	 * Branch의 right에 해당하는 컴퓨터번호가 나올때까지 history를 삭제
+	 * @param history
+	 * @param next
+	 */
 	private void clear(Stack<Integer> history, Branch next) {
 		while(history.isEmpty()) {
 			Integer deleted = history.pop();
@@ -173,8 +203,8 @@ public class HakingList {
 
 	private Branch getRequestBranch() {
 //		return new Branch(randomIntN(10000), randomIntN(100000));
-//		return new Branch(randomIntN(100), randomIntN(200));
-		return new Branch(100, 200);
+//		return new Branch(randomIntN(200), randomIntN(2000));
+		return new Branch(10000, 100000);
 	}
 
 	private Branch getBranch(int max) {
@@ -189,7 +219,7 @@ public class HakingList {
 
 	private int randomIntN(int max, int left) {
 		int right = randomIntN(max);
-//		//System.out.println("left:"+left+" right:"+right);
+//		////System.out.println("left:"+left+" right:"+right);
 		if (left == right)
 			right = randomIntN(max, left);
 		return right;
