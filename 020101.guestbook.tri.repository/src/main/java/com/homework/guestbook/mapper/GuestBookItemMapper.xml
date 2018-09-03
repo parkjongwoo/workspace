@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.homework.guestbook.mapper.GuestBookItemMapper">
+	
+	
+	<!-- mybatis config 파일에 등록한 typeAliases id값으로 type입력값을 대체 가능(별칭등록해서 풀패키지표현이 아닌 짧은 표현 사용)  -->
+	<resultMap type="GuestBookItem" id="GuestBookItemResult">
+		<id property="num" column="num"/>
+		<result property="no" column="no"/>
+		<result property="name" column="name"/>
+		<result property="subject" column="subject"/>
+		<result property="content" column="content"/>
+		<result property="writedate" column="writedate"/>
+	</resultMap>
+	
+	<!-- Mapper interface에 작성된 findAll method에 대응하는 쿼리문. 쿼리결과는 CusotomerResult에 작성된 매칭을 참고하여 결과를 생성한다.  -->
+	<select id="selectAll" resultMap="GuestBookItemResult">
+		SELECT * FROM  
+			(SELECT ROWNUM NO,G.* FROM (SELECT * FROM GUESTBOOK ORDER BY WRITEDATE) G)  
+			ORDER BY NO DESC
+	</select>
+	
+	<select id="selectById" parameterType="int" resultType="GuestBookItem">
+		SELECT 1 NO, G.* FROM GUESTBOOK G WHERE NUM=#{num}
+	</select>	
+	
+	<insert id="insert" parameterType="GuestBookItem">
+		<selectKey keyProperty="num" resultType="int" order="BEFORE">
+			SELECT SEQ_GUESTBOOK_NUM.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO GUESTBOOK VALUES(  
+			#{num},  
+			#{name},  
+			#{subject},  
+			#{content},  
+			SYSDATE)
+	</insert>
+	
+	<update id="update" parameterType="GuestBookItem">
+		UPDATE GUESTBOOK SET  
+			NAME=#{name},  
+			SUBJECT=#{subject},  
+			CONTENT=#{content},  
+			WRITEDATE=SYSDATE  
+			WHERE NUM=#{num}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM GUESTBOOK WHERE NUM=#{num}
+	</delete>
+</mapper>

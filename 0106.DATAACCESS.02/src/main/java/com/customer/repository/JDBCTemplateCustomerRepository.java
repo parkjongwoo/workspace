@@ -24,9 +24,9 @@ import com.customer.sql.CustomerSQL;
  * %% service에서 적당히 골라 사용할수 있도록 annotation등을 조정하자.
  * %% file 내보내기 기능 등도 추가해보자.
  * 
- * queryforobject()는 row가 없는 경우 exception 발생 시킴
- * queryforList()는 row가 없으면 빈 list를 반환
- * exception 처리는 비용이 크므로 list로 처리하자		
+ * queryforobject()는 row가 없는 경우 exception 발생 시킴---검토필요
+ * queryforList()는 row가 없으면 빈 list를 반환--검토필요
+ * exception 처리는 비용이 크므로 list로 처리하자--검토필요
  * @author goott3-4
  *
  */
