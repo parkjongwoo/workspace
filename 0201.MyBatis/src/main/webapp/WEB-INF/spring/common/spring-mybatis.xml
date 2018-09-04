@@ -8,40 +8,22 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	
-	<!-- 분리한 xml을 여기서 로딩. -->
-	<!-- xml이 서로 참조하고 있으므로 따로 등록하는 것이 아니고, 루트에 import해야함  -->
-	<beans:import resource="common/spring-datasource.xml"/>
-	<beans:import resource="common/spring-mybatis.xml"/>
 	<!-- 모든 servlet이 참조할 context Bean -->
-	<!-- DataSource 등 통합해서 사용할 Bean들은 여기에 선언해서 공통 사용한다. -->
-	<!-- common 폴더에 분리해서 저장했으므로 이곳은 주석처리 -->
-	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- dbcp2를 이용한 DataSource 연결 Bean -->
-<!-- 	<beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"> -->
-<!-- 		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/> -->
-<!-- 		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/> -->
-<!-- 		<beans:property name="username" value="scott"/> -->
-<!-- 		<beans:property name="password" value="tiger"/> -->
-<!-- 		<beans:property name="initialSize" value="9"/> -->
-<!-- 		<beans:property name="maxIdle" value="5"/> -->
-<!-- 	</beans:bean> -->
-	<!-- dbcp2를 이용한 DataSource 연결 Bean 끝-->
-	
+	<!-- mybatis 사용할 Bean들은 여기에 선언해서 공통 사용한다. -->
+		
 	<!-- ============== mybatis ================== -->
 	<!-- mybatis 에서 사용할 SqlSessionFactoryBean, SqlSessionTemplate 선언 -->
 	<!-- mybatis 에서 사용할 SqlSessionFactoryBean에 아래와 같이 DB DataSource, config.xml 파일주소를 전달 -->
-<!-- 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> -->
-<!-- 		<beans:property name="dataSource" ref="dataSource"/> -->
-<!-- 		<beans:property name="configLocation" value="WEB-INF/mybatis/mybatis-config.xml"/> -->
-<!-- 	</beans:bean> -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="configLocation" value="WEB-INF/mybatis/mybatis-config.xml"/>
+	</beans:bean>
 	<!-- mybatis 에서 사용할 SqlSessionFactoryBean에 아래와 같이 DB DataSource, config.xml 파일주소를 전달 끝-->
 	
 	<!-- mybatis 에서 사용할 SqlSessionTemplate에 위의 SqlSessionFactoryBean 을 전달 -->
-<!-- 	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate"> -->
-<!-- 		<beans:constructor-arg index="0" ref="sqlSessionFactory"/> -->
-<!-- 	</beans:bean> -->
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
+	</beans:bean>
 	<!-- mybatis 에서 사용할 SqlSessionTemplate에 위의 SqlSessionFactoryBean 을 전달 끝 -->
 	<!-- mybatis 에서 사용할 SqlSessionFactoryBean, SqlSessionTemplate 선언 끝 -->
 	
@@ -52,6 +34,6 @@
 	<!-- mybatis-config.xml에 정의한 Mapper 필요없음.  -->
 	<!-- servlet-context.xml에 등록한 Bean 필요없음. -->
 	<!-- mybatis namespace 추가 필요 -->
-<!-- 	<mybatis:scan base-package="com.customer.mapper"/> -->
+	<mybatis:scan base-package="com.customer.mapper"/>
 	
 </beans:beans>

@@ -57,7 +57,7 @@ public class CustomerController {
 
 		model.addAttribute("message", result);
 		
-		return "redirect:/list";
+		return "redirect:/page";
 	}
 	
 	@ModelAttribute("customers")
@@ -81,14 +81,14 @@ public class CustomerController {
 		System.out.println("update:"+customer);
 		String msg = customerService.updateCustomer(customer);
 		model.addAttribute("msg", msg);
-		return "redirect:/list";
+		return "redirect:/page";
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public String deleteCustomer(@RequestParam int customerid, Model model) {
 		String msg = customerService.deleteCustomer(customerid);
 		model.addAttribute("msg", msg);		
-		return "redirect:/list";
+		return "redirect:/page";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
@@ -116,5 +116,20 @@ public class CustomerController {
 		boolean result = customerService.getIdCheckResult(id);
 		model.addAttribute("isNewId", result);
 		return "idcheck";
+	}
+	
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	@ModelAttribute("customers")
+	public List<Customer> page(@RequestParam(defaultValue="1") int selectPage,Model model){
+		List<Customer> customers = customerService.getCustomersByPageNo(selectPage);
+		int pageCount = customerService.getPageCount();
+		int firstPageNum = customerService.getFirstPageNum(selectPage ,pageCount);
+		int lastPageNum = customerService.getLastPageNum(selectPage ,pageCount);
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("selectPage", selectPage);
+		model.addAttribute("firstPageNum", firstPageNum);
+		model.addAttribute("lastPageNum", lastPageNum);
+		
+		return customers;
 	}
 }

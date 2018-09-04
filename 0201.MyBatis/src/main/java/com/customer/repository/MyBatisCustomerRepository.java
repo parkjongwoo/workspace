@@ -2,6 +2,7 @@ package com.customer.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,8 +12,17 @@ import com.customer.model.Customer;
 @Repository("MyBatisCustomerRepository")
 public class MyBatisCustomerRepository implements CustomerRepository {
 	
+	/**
+	 * interface, xml 분리된 Mapper
+	 */
 	@Autowired
 	private CustomerMapper mapper;
+	
+	/**
+	 * interface, xml 통합된 Mapper
+	 */
+//	@Autowired
+//	private AnnotationCustomerMapper mapper;
 
 	@Override
 	public List<Customer> selectAll() {
@@ -62,5 +72,13 @@ public class MyBatisCustomerRepository implements CustomerRepository {
 		return mapper.remove(id);
 	}
 	
+	@Override
+	public int findCount() {
+		return mapper.findCount();
+	}
 	
+	@Override
+	public List<Customer> findByPage(RowBounds rowBounds){
+		return mapper.findByPage(rowBounds);
+	}
 }

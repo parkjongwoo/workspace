@@ -2,10 +2,11 @@
 <!DOCTYPE mapper
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.customer.mapper.CustomerMapper">
+<mapper namespace="com.customer.mapper.CustomerMapper"><!--정의해둔  interface 패키지  -->
 	
 	
-	<!-- mybatis config 파일에 등록한 typeAliases id값으로 type입력값을 대체 가능(별칭등록해서 풀패키지표현이 아닌 짧은 표현 사용)  -->
+	<!-- List<T>를 반환받는 쿼리에 지정해줄 resultMap 정의-->
+	<!-- type은 mybatis config 파일에 등록한 typeAliases id값으로 대체 가능(별칭등록해서 풀패키지표현이 아닌 짧은 표현 사용)  -->
 	<resultMap type="Customer" id="CusotomerResult">
 		<id property="customerid" column="customerid"/>
 		<result property="id" column="id"/>
@@ -57,4 +58,15 @@
 	<delete id="remove" parameterType="int">
 		DELETE FROM CUSTOMER WHERE CUSTOMERID=#{customerid}
 	</delete>
+	
+	<!-- 페이징 처리 -->
+	<select id="findCount" resultType="int">
+		SELECT COUNT(*) AS COUNT FROM CUSTOMER 
+	</select>
+	
+	
+	<!-- interface 에 정의한 rowbounds는 mybatis에서 처리하므로 개발자가 추가할 쿼리는 없음 -->
+	<select id="findByPage" resultMap="CusotomerResult">
+		SELECT * FROM CUSTOMER ORDER BY CUSTOMERID DESC
+	</select>
 </mapper>

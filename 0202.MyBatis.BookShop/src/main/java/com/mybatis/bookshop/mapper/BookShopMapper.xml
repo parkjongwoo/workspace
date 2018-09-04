@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.bookshop.mapper.BookShopMapper"><!--정의해둔  interface 패키지  -->
+	
+	
+	<!-- List<T>를 반환받는 쿼리에 지정해줄 resultMap 정의-->
+	<!-- type은 mybatis config 파일에 등록한 typeAliases id값으로 대체 가능(별칭등록해서 풀패키지표현이 아닌 짧은 표현 사용)  -->
+	<resultMap type="Customer" id="CusotomerResult">
+		<id property="customerid" column="customerid"/>
+		<result property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="password" column="password"/>
+		<result property="postcode" column="postcode"/>
+		<result property="address" column="address"/>
+		<result property="address2" column="address2"/>
+		<result property="phone" column="phone"/>
+		<result property="email" column="email"/>
+	</resultMap>
+	
+	<resultMap type="Book" id="BookResult">
+		<id property="bookid" column="bookid"/>
+		<result property="bookName" column="bookName"/>
+		<result property="publisher" column="publisher"/>
+		<result property="price" column="price"/>
+		<result property="description" column="description"/>
+	</resultMap>
+	
+	<!-- 관련 테이블의 참조형 데이터를 가져오는 경우 -->
+	<!-- association 태그 사용. -->
+	<!-- property: 넣을변수명(result태그와 동일), column: 참조될 테이블을 검색할 본 테이블의 컬럼명(foreign key가 유력) -->
+	<!-- select: 참조 테이블을 검색할 mapper.xml의 select 태그의 id -->
+	<resultMap type="OrderItem" id="OrderItemResult">
+		<id property="orderItemid" column="orderItemid"/>
+		<result property="quantity" column="quantity"/>
+		<association property="book" column="bookid"
+			select="com.mybatis.bookshop.mapper.BookShopMapper.findByBookId"></association>
+	</resultMap>
+	
+	
+	
+	<select id="findByCustomerId" parameterType="int" resultType="Customer">
+		SELECT * FROM CUSTOMER WHERE CUSTOMERID=#{customerid}
+	</select>
+	
+	<select id="findByBookId" parameterType="int" resultType="Book">
+		SELECT * FROM BOOK WHERE BOOKID=#{bookid}
+	</select>
+	
+	<select id="findByOrderItemId" parameterType="int" resultType="OrderItem">
+		SELECT * FROM ORDERITEM WHERE ORDERITEMID=#{orderItemid}
+	</select>
+	
+	
+</mapper>

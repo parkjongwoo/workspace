@@ -2,10 +2,12 @@
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.common.page.Page;
 import com.customer.model.Customer;
 import com.customer.repository.MyBatisCustomerRepository;
 
@@ -74,5 +76,41 @@ public class CustomerService {
 		//이미 존재하는 아이디 false
 		//존재하지 않는 아이디 true
 		return isNewId;	
+	}
+	
+	/**
+	 * 페이지 갯수 반환.
+	 * 총 row / 페이지당 row   값을 올림. > 페이지당 row가 남은 페이지가 있으므로.
+	 * @return
+	 */
+	public int getPageCount() {
+		int totalRow = customerRepository.findCount();		
+		return totalRow/Page.ROWS_PER_PAGE + (totalRow%Page.ROWS_PER_PAGE==0?0:1);//올림처리. double 변환후 올림하는 것보다 자원소모 적음.
+	}
+	
+	public List<Customer> getCustomersByPageNo(int page) {	
+		RowBounds rowBounds = new RowBounds(Page.ROWS_PER_PAGE*(page-1), Page.ROWS_PER_PAGE);
+		List<Customer> list = customerRepository.findByPage(rowBounds);
+		return list;
+	}
+	
+	public int getFirstPageNum(int page, int pageCount) {
+//		int totalPageGroup = pageCount/Page.PAGES_PER_PAGEGROUP + (pageCount%Page.PAGES_PER_PAGEGROUP==0?0:1);
+		int currentPageGroup = page/Page.PAGES_PER_PAGEGROUP + (page%Page.PAGES_PER_PAGEGROUP==0?0:1);
+		int firstPageNum = (currentPageGroup-1)*Page.PAGES_PER_PAGEGROUP+1;
+		if(firstPageNum<1) {
+			firstPageNum = 1;
+		}
+		return firstPageNum;
+	}
+	
+	public int getLastPageNum(int page, int pageCount) {
+//		int totalPageGroup = pageCount/Page.PAGES_PER_PAGEGROUP + (pageCount%Page.PAGES_PER_PAGEGROUP==0?0:1);
+		int currentPageGroup = page/Page.PAGES_PER_PAGEGROUP + (page%Page.PAGES_PER_PAGEGROUP==0?0:1);
+		int lastPageNum = currentPageGroup*Page.PAGES_PER_PAGEGROUP;
+		if(lastPageNum > pageCount) {
+			lastPageNum = pageCount;
+		}
+		return lastPageNum;
 	}
 }

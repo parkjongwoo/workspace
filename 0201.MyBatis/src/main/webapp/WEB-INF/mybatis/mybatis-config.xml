@@ -2,11 +2,22 @@
 <!DOCTYPE configuration
 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+	<!-- annotation 사용전 분리된 interface.java, xml Mappert선언 -->
+<!-- <configuration> -->
+<!-- 	<typeAliases> -->
+<!-- 		<typeAlias alias="Customer" type="com.customer.model.Customer"/> -->
+<!-- 	</typeAliases> -->
+<!-- 	<mappers> -->
+<!-- 		<mapper resource="com/customer/mapper/CustomerMapper.xml"/> -->
+<!-- 	</mappers> -->
+<!-- </configuration> -->
+
 <configuration>
 	<typeAliases>
 		<typeAlias alias="Customer" type="com.customer.model.Customer"/>
 	</typeAliases>
-	<mappers>
-		<mapper resource="com/customer/mapper/CustomerMapper.xml"/>
-	</mappers>
+	<!-- mybatis 자동등록 기능으로 필요없으므로 삭제 -->
+<!-- 	<mappers> -->
+<!-- 		<mapper class="com.customer.mapper.AnnotationCustomerMapper"/> -->
+<!-- 	</mappers> -->
 </configuration>
