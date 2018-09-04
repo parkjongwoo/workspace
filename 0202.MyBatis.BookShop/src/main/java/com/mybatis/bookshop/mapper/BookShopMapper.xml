@@ -27,15 +27,15 @@
 		<result property="description" column="description"/>
 	</resultMap>
 	
-	<!-- 관련 테이블의 참조형 데이터를 가져오는 경우 -->
+	<!-- 관련 테이블의 참조형 데이터를 가져오는 경우: 테이블 조인 -->
 	<!-- association 태그 사용. -->
-	<!-- property: 넣을변수명(result태그와 동일), column: 참조될 테이블을 검색할 본 테이블의 컬럼명(foreign key가 유력) -->
-	<!-- select: 참조 테이블을 검색할 mapper.xml의 select 태그의 id -->
+	<!-- property: 넣을변수명(result태그와 동일), column: 참조될 테이블을 검색할 본 테이블의 컬럼명(foreign key가 유력): select에 지정될 select쿼리에 인수로 전달된다. -->
+	<!-- select: 조인될 테이블의 쿼리를 정의한 select태그의 id값 -->
 	<resultMap type="OrderItem" id="OrderItemResult">
 		<id property="orderItemid" column="orderItemid"/>
 		<result property="quantity" column="quantity"/>
 		<association property="book" column="bookid"
-			select="com.mybatis.bookshop.mapper.BookShopMapper.findByBookId"></association>
+			select="findByBookId"></association>
 	</resultMap>
 	
 	
@@ -48,7 +48,7 @@
 		SELECT * FROM BOOK WHERE BOOKID=#{bookid}
 	</select>
 	
-	<select id="findByOrderItemId" parameterType="int" resultType="OrderItem">
+	<select id="findByOrderItemId" parameterType="int" resultMap="OrderItemResult">
 		SELECT * FROM ORDERITEM WHERE ORDERITEMID=#{orderItemid}
 	</select>
 	

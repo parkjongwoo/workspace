@@ -60,13 +60,6 @@
 <!-- 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory"/> -->
 <!-- 	</beans:bean> -->
 	
-	<!-- Mapper 등록(기존 interface,xml분리된 Mapper) -->
-	<!-- 아래 Mybatis Mapper 자동등록으로 필요없으므로 주석처리 -->
-<!-- 	<beans:bean id="customerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"> -->
-<!-- 		<beans:property name="mapperInterface" value="com.customer.mapper.AnnotationCustomerMapper"/> -->
-<!-- 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory"/> -->
-<!-- 	</beans:bean>	 -->
-	
 	<!-- 작성한 Mapper를 자동 검색 등록 -->
 	<!-- 해당 패키지에서 mapper를 검색하여 자동 등록한다. -->
 	<!-- mybatis-config.xml에 정의한 Mapper 필요없음.  -->

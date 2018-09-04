@@ -10,8 +10,7 @@
 <body>
 	<h3></h3>
 	<form action="searchOrderItem" method="post">
-		<input type="text" name="orderitemid"> <input type="submit"
-			value="">
+		<input type="text" name="orderitemid"> <input type="submit"	value="검색">
 	</form>
 	<c:choose>
 		<c:when test="${empty orderItem}">

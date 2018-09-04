@@ -39,6 +39,6 @@
 	<bean id="house_uae_Abu_Dhabi" class="spring.ex03.practice.House">
 		<property name="price" value="999999999" />
 		<property name="addr" value="uae_Abu_Dhabi" />
-<!-- 		
 	</bean>
+
 </beans>
