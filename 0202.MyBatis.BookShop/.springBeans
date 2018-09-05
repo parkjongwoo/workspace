@@ -7,8 +7,11 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
+		<config>src/main/webapp/WEB-INF/spring/common/spring-datasource.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/common/spring-mybatis.xml</config>
 	</configs>
 	<autoconfigs>
+		<config>src/main/webapp/WEB-INF/spring/bookShoppingServlet/bookShopping-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/root-context.xml</config>
 	</autoconfigs>
 	<configSets>

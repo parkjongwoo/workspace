@@ -53,7 +53,7 @@ public class BookShopController {
 		return "bookInsertForm";
 	}
 	
-	@RequestMapping(value="/insertBook", method=RequestMethod.GET)
+	@RequestMapping(value="/insertBook", method=RequestMethod.POST)
 	public String getOrder(Book book, Model model) {
 		String msg = bookShopService.insertBookInfo(book);
 		model.addAttribute("msg", msg);

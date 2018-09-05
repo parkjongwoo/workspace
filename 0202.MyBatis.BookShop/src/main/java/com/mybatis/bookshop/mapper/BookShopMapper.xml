@@ -93,7 +93,7 @@
 	
 	<insert id="insertBookInfo" parameterType="Book">
 		<selectKey keyProperty="bookid" resultType="int" order="BEFORE">
-			SELECT SEQ_BOOK_ID.NEXTVAL FROM DUAL
+			SELECT SEQ_BOOK.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO BOOK 
 		(BOOKID, BOOKNAME, PUBLISHER, PRICE, DESCRIPTION)
