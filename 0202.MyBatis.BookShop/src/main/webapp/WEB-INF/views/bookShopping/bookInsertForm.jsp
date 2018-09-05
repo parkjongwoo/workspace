@@ -64,7 +64,7 @@
 			
 			<div class="mb-3 form-row">
 				<div class="col-12">
-					<input type="text" name="description" id="description" class="form-control" value="${book.description}" placeholder="설명을 입력하세요.">
+					<textarea type="text" name="description" id="description" class="form-control" value="${book.description}" placeholder="설명을 입력하세요."></textarea>
 					<sf:errors path="description" id="description_error" class="badge badge-pill badge-danger"/>
 				</div>				
 			</div>	

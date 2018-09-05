@@ -1,9 +1,12 @@
 ﻿package com.mybatis.bookshop.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mybatis.bookshop.condition.BookCondition;
 import com.mybatis.bookshop.model.Book;
 import com.mybatis.bookshop.model.Customer;
 import com.mybatis.bookshop.model.Order;
@@ -37,6 +40,10 @@ public class BookShopService {
 	
 	public String insertBookInfo(Book book) {
 		return bookShopRepository.insertBookInfo(book)>0?"입력되었습니다.":"입력실패했습니다.";
+	}
+	
+	public List<Book> getBookByCondition(BookCondition bookCondition) {		
+		return bookShopRepository.findByBookCondition(bookCondition);		 
 	}
 //	public String saveCustomer(Customer customer) {
 //		int count = customerRepository.insert(customer);
@@ -133,4 +140,7 @@ public class BookShopService {
 //		}
 //		return lastPageNum;
 //	}
+
+
+	
 }

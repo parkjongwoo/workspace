@@ -2,6 +2,7 @@ package com.mybatis.bookshop.mapper;
 
 import java.util.List;
 
+import com.mybatis.bookshop.condition.BookCondition;
 import com.mybatis.bookshop.condition.CustomerCondition;
 import com.mybatis.bookshop.model.Book;
 import com.mybatis.bookshop.model.Customer;
@@ -17,6 +18,7 @@ public interface BookShopMapper {
 	Book findByBookId(int bookid);
 	OrderItem findByOrderItemId(int orderItemid);
 	Customer findCustomerByLoginInfo(Customer formInfo);
+	List<Book> findByBookCondition(BookCondition bookCondition);
 	
 	
 	//1:N관계 테이블 조인
@@ -29,4 +31,5 @@ public interface BookShopMapper {
 	
 	
 	int insertBookInfo(Book book);
+
 }

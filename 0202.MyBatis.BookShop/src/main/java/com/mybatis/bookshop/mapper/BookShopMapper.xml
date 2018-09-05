@@ -99,4 +99,20 @@
 		(BOOKID, BOOKNAME, PUBLISHER, PRICE, DESCRIPTION)
 		VALUES(#{bookid}, #{bookName}, #{publisher}, #{price}, #{description})
 	</insert>
+	
+	<select id="findByBookCondition" parameterType="BookCondition" resultMap="BookResult">
+		SELECT * FROM BOOK WHERE 1=1
+		<if test="bookName!=null">
+		AND BOOKNAME like #{bookName}
+		</if>
+		<if test="publisher!=null">
+		AND PUBLISHER like #{publisher}
+		</if>
+		<if test="priceMin!=null">
+		AND PRICE  &gt;= #{priceMin}
+		</if>
+		<if test="priceMax!=null">
+		AND PRICE  &lt;= #{priceMax}
+		</if>
+	</select>
 </mapper>

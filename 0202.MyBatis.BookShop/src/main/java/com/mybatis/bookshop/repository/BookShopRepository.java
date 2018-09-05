@@ -1,5 +1,8 @@
 package com.mybatis.bookshop.repository;
 
+import java.util.List;
+
+import com.mybatis.bookshop.condition.BookCondition;
 import com.mybatis.bookshop.model.Book;
 import com.mybatis.bookshop.model.Customer;
 import com.mybatis.bookshop.model.Order;
@@ -16,6 +19,7 @@ public interface BookShopRepository {
 	Order findByOrderId(int orderid);
 	
 	int insertBookInfo(Book book);
+	List<Book> findByBookCondition(BookCondition bookCondition);
 	
 //	int selectCntById(String id);
 //	List<Customer> selectByName(String name);

@@ -1,11 +1,15 @@
 ﻿package com.mybatis.bookshop.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mybatis.bookshop.condition.BookCondition;
 import com.mybatis.bookshop.condition.OrderCondition;
 import com.mybatis.bookshop.condition.OrderItemCondition;
 import com.mybatis.bookshop.model.Book;
@@ -61,6 +65,13 @@ public class BookShopController {
 		return "bookInsertForm";
 	}
 	
+	@RequestMapping(value="/searchBook", method=RequestMethod.GET)
+	public String searchBook(@ModelAttribute BookCondition bookCondition, Model model) {
+		System.out.println("bookCondition:"+bookCondition);
+		List<Book> bookList = bookShopService.getBookByCondition(bookCondition);
+		model.addAttribute("bookList", bookList);
+		return "searchBook";
+	}
 //	@RequestMapping(value = "/customer_save", method = RequestMethod.GET)
 //	public String getForm(Customer customer) {
 //		return "insert";

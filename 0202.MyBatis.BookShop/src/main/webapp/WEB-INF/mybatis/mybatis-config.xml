@@ -4,10 +4,15 @@
 	"http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
+		<!-- VO -->
 		<typeAlias alias="Customer" type="com.mybatis.bookshop.model.Customer"/>
 		<typeAlias alias="Book" type="com.mybatis.bookshop.model.Book"/>
 		<typeAlias alias="Order" type="com.mybatis.bookshop.model.Order"/>
-		<typeAlias alias="OrderItem" type="com.mybatis.bookshop.model.OrderItem"/>		
+		<typeAlias alias="OrderItem" type="com.mybatis.bookshop.model.OrderItem"/>
+		
+		<!-- Condition -->		
+		<typeAlias alias="CustomerCondition" type="com.mybatis.bookshop.condition.CustomerCondition"/>
+		<typeAlias alias="BookCondition" type="com.mybatis.bookshop.condition.BookCondition"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/mybatis/bookshop/mapper/BookShopMapper.xml"/>

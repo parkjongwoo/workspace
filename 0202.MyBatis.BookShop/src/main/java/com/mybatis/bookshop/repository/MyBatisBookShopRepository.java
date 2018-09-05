@@ -1,8 +1,11 @@
 package com.mybatis.bookshop.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.mybatis.bookshop.condition.BookCondition;
 import com.mybatis.bookshop.mapper.BookShopMapper;
 import com.mybatis.bookshop.model.Book;
 import com.mybatis.bookshop.model.Customer;
@@ -54,6 +57,10 @@ public class MyBatisBookShopRepository implements BookShopRepository {
 		return mapper.insertBookInfo(book);
 	}
 	
+	@Override
+	public List<Book> findByBookCondition(BookCondition bookCondition){
+		return mapper.findByBookCondition(bookCondition);
+	}
 	
 //	@Override
 //	public List<Customer> selectAll() {

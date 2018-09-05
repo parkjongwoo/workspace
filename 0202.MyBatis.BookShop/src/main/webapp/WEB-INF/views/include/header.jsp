@@ -11,13 +11,13 @@
 				<c:when test="${empty loginInfo}">
 					<a class="nav-link active" href="/bookshop/customer/loginForm">로그인</a>
 					<a class="nav-link" href="/bookshop/bookShopping/bookInsertForm">책입력</a>
-					<a class="nav-link" href="#">Shopping</a>
+					<a class="nav-link" href="/bookshop/bookShopping/searchBook">책구매</a>
 				</c:when>
 				<c:otherwise>
 					<a class="nav-link active" href="/bookshop/customer/logout">로그아웃</a>
 					<a class="nav-link" href="/bookshop/bookShopping/bookInsertForm">책입력</a>
-					<a class="nav-link" href="#">Shopping</a>
-					<a class="nav-link" href="#">MyOrders</a>
+					<a class="nav-link" href="/bookshop/bookShopping/searchBook">책구매</a>
+					<a class="nav-link" href="#">내주문목록</a>
 				</c:otherwise>
 			</c:choose>
 		</nav>
