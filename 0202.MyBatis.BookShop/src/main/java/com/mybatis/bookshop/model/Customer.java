@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class Customer {
 	int customerid;
 	@Pattern(regexp="^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}$",message="아이디는 영문자로 시작,5~12자 이내")

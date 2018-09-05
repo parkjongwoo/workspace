@@ -60,7 +60,7 @@ public class CustomerController {
 		return "redirect:/page";
 	}
 	
-	@ModelAttribute("customers")
+//	@ModelAttribute("customers")//생략가능, collection 인 경우도 "generic형+List"등의 형식으로 자동 저장.여기서는 "customerList"
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<Customer> list() {
 		List<Customer> list = customerService.getCustomers();
@@ -68,10 +68,9 @@ public class CustomerController {
 		return list;
 	}
 	
-	@ModelAttribute("customer")
+//	@ModelAttribute("customer")//생략가능, collection 인 경우도 "generic형+List"등의 형식으로 자동 저장
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public Customer detail(@RequestParam int customerid) {	
-		
+	public Customer detail(@RequestParam int customerid) {
 		Customer c = customerService.getCustomerByCustomerId(customerid);		
 		return c;
 	}

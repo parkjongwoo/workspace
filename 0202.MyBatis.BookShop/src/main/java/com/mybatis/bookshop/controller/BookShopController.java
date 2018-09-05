@@ -6,7 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mybatis.bookshop.condition.OrderCondition;
 import com.mybatis.bookshop.condition.OrderItemCondition;
+import com.mybatis.bookshop.model.Book;
+import com.mybatis.bookshop.model.Order;
 import com.mybatis.bookshop.model.OrderItem;
 import com.mybatis.bookshop.service.BookShopService;
 
@@ -27,10 +30,35 @@ public class BookShopController {
 	}
 	
 	@RequestMapping(value="/searchOrderItem", method=RequestMethod.POST)
-	public String searchOrderItemPost(OrderItemCondition orderItemCondition, Model model) {
+	public String getOrderItemPost(OrderItemCondition orderItemCondition, Model model) {
 		OrderItem item = bookShopService.getOrderItemById(orderItemCondition.getOrderitemid());
 		model.addAttribute("orderItem", item);
 		return "searchOrderItem";
+	}
+	
+	@RequestMapping(value="/searchOrder", method=RequestMethod.GET)
+	public String searchOrder() {
+		return "searchOrder";
+	}
+	
+	@RequestMapping(value="/searchOrder", method=RequestMethod.POST)
+	public String getOrder(OrderCondition orderCondition, Model model) {
+		Order order = bookShopService.getOrderById(orderCondition.getOrderid());
+		model.addAttribute("order", order);
+		return "searchOrder";
+	}
+	
+	@RequestMapping(value="/bookInsertForm", method=RequestMethod.GET)
+	public String bookInsertForm() {
+		return "bookInsertForm";
+	}
+	
+	@RequestMapping(value="/insertBook", method=RequestMethod.GET)
+	public String getOrder(Book book, Model model) {
+		String msg = bookShopService.insertBookInfo(book);
+		model.addAttribute("msg", msg);
+		model.addAttribute("book", book);
+		return "bookInsertForm";
 	}
 	
 //	@RequestMapping(value = "/customer_save", method = RequestMethod.GET)

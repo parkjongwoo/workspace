@@ -51,7 +51,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="item" items="${customers}">
+				<c:forEach var="item" items="${customerList}">
 					<tr>
 						<th scope="row">${item.id}</th>
 						<td><a href="detail?customerid=${item.customerid}">${item.name}</a></td>						

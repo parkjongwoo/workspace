@@ -35,16 +35,27 @@
 		<id property="orderItemid" column="orderItemid"/>
 		<result property="quantity" column="quantity"/>
 		<association property="book" column="bookid"
-			select="findByBookId"></association>
+			select="com.mybatis.bookshop.mapper.BookShopMapper.findByBookId"/>
+	</resultMap>
+	
+	<resultMap type="Order" id="OrderResult">
+		<id property="orderid" column="orderid"/>
+		<result property="orderDate" column="orderDate" javaType="java.sql.Date"/>
+		<result property="amount" column="amount"/>
+		<result property="sendYN" column="sendYN"/>
+		<result property="payOption" column="payOption"/>
+		<association property="customer" column="customerid"
+			select="com.mybatis.bookshop.mapper.BookShopMapper.findByCustomerId"/>
+		<collection property="orderItemList" column="orderid" 
+			ofType="OrderItem" select="com.mybatis.bookshop.mapper.BookShopMapper.findByOrderIdFromOrderItem"/>
 	</resultMap>
 	
 	
-	
-	<select id="findByCustomerId" parameterType="int" resultType="Customer">
+	<select id="findByCustomerId" parameterType="int" resultMap="CusotomerResult">
 		SELECT * FROM CUSTOMER WHERE CUSTOMERID=#{customerid}
 	</select>
 	
-	<select id="findByBookId" parameterType="int" resultType="Book">
+	<select id="findByBookId" parameterType="int" resultMap="BookResult">
 		SELECT * FROM BOOK WHERE BOOKID=#{bookid}
 	</select>
 	
@@ -52,5 +63,40 @@
 		SELECT * FROM ORDERITEM WHERE ORDERITEMID=#{orderItemid}
 	</select>
 	
+	<!-- order 목록 검색 시작 -->
+	<select id="findByOrderId" parameterType="int" resultMap="OrderResult">
+		SELECT * FROM ORDERS WHERE ORDERID=#{orderid}
+	</select>
 	
+	<select id="findByOrderIdFromOrderItem" parameterType="int" resultMap="OrderItemResult">
+		SELECT * FROM ORDERITEM WHERE ORDERID=#{orderid}
+	</select>
+	<!-- order 목록 검색 끝 -->
+	
+	<select id="findCustomer" parameterType="Customer" resultMap="CusotomerResult">
+		SELECT * FROM CUSTOMER WHERE 1=1
+		<if test="name!=null">
+		AND NAME like #{name}
+		</if>
+		<if test="address!=null">
+		AND ADDRESS like #{address}
+		</if>
+		<if test="email!=null">
+		AND EMAIL like #{email}
+		</if>
+	</select>
+	
+	<select id="findCustomerByLoginInfo" parameterType="Customer" resultType="Customer">
+		SELECT * FROM CUSTOMER WHERE ID=#{id} AND PASSWORD=#{password}
+	</select>
+	
+	
+	<insert id="insertBookInfo" parameterType="Book">
+		<selectKey keyProperty="bookid" resultType="int" order="BEFORE">
+			SELECT SEQ_BOOK_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO BOOK 
+		(BOOKID, BOOKNAME, PUBLISHER, PRICE, DESCRIPTION)
+		VALUES(#{bookid}, #{bookName}, #{publisher}, #{price}, #{description})
+	</insert>
 </mapper>

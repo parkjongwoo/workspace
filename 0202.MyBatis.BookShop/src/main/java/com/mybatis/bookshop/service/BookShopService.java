@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.mybatis.bookshop.model.Book;
+import com.mybatis.bookshop.model.Customer;
+import com.mybatis.bookshop.model.Order;
 import com.mybatis.bookshop.model.OrderItem;
 import com.mybatis.bookshop.repository.BookShopRepository;
 
@@ -19,7 +22,22 @@ public class BookShopService {
 		OrderItem item = bookShopRepository.findByOrderItemId(orderItemid);
 		return item;
 	}
+
+
+	public Order getOrderById(int orderid) {
+		Order order = bookShopRepository.findByOrderId(orderid);
+		return order;
+	}
 	
+	public Customer getMatchedLoginInfoCnt(Customer formInfo) {
+		
+		Customer customer = bookShopRepository.findCustomerByLoginInfo(formInfo);
+		return customer;
+	}
+	
+	public String insertBookInfo(Book book) {
+		return bookShopRepository.insertBookInfo(book)>0?"입력되었습니다.":"입력실패했습니다.";
+	}
 //	public String saveCustomer(Customer customer) {
 //		int count = customerRepository.insert(customer);
 //		

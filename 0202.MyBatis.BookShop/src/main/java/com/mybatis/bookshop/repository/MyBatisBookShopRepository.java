@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import com.mybatis.bookshop.mapper.BookShopMapper;
 import com.mybatis.bookshop.model.Book;
 import com.mybatis.bookshop.model.Customer;
+import com.mybatis.bookshop.model.Order;
 import com.mybatis.bookshop.model.OrderItem;
 
 @Repository("MyBatisBookShopRepository")
@@ -36,6 +37,21 @@ public class MyBatisBookShopRepository implements BookShopRepository {
 	@Override
 	public OrderItem findByOrderItemId(int orderItemid) {		
 		return mapper.findByOrderItemId(orderItemid);
+	}
+
+	@Override
+	public Order findByOrderId(int orderid) {
+		return mapper.findByOrderId(orderid);
+	}
+	
+	@Override
+	public Customer findCustomerByLoginInfo(Customer formInfo) {
+		return mapper.findCustomerByLoginInfo(formInfo);
+	}
+
+	@Override
+	public int insertBookInfo(Book book) {
+		return mapper.insertBookInfo(book);
 	}
 	
 	
