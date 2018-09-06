@@ -21,7 +21,7 @@
 		<h1 class="cover-heading">재미로 만드는 온라인 서점</h1>
 		<p class="lead">연습을 위해 만들었으므로 부족한 점이 많은 쇼핑몰 입니다.</p>
 		<p class="lead">
-			<a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+			<a href="/bookshop/customer/phone" class="btn btn-lg btn-secondary">전화예제/주문하기화면</a>
 		</p>
 		</main>
 		<jsp:include page="/WEB-INF/views/include/footer.jsp" />

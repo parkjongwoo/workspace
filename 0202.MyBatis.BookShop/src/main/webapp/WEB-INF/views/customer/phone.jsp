@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>새 책 등록</title>
+<title>전화 구매 목록</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet"
@@ -48,6 +48,7 @@
 				
 			</div>
 		</form>
+		<form action="/bookshop/customer/phone" method="post" >
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -57,20 +58,22 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="item" items="${bookList}">
+				<c:forEach var="item" items="${phoneItems}" varStatus="s">
 					<tr>
-						<td scope="row">${item.bookName}</td>
-						<td scope="row">${item.publisher}</td>
-						<td scope="row">${item.price}</td>						
+						<td scope="row"><input type="text" name="phones[${s.index}].id" value="${item.id}"/></td>
+						<td scope="row"><input type="text" name="phones[${s.index}].name" value="${item.name}"/></td>
+						<td scope="row"><input type="text" name="phones[${s.index}].quantity" value="${item.quantity}"/></td>						
 					</tr>
 				</c:forEach>
-				<c:if test="${empty bookList}">
+				<c:if test="${empty phoneItems}">
 					<tr>
 						<td colspan="3">검색결과가 없습니다.</td>
 					</tr>
 				</c:if>
 			</tbody>
 		</table>
+		<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="주문">
+		</form>
 		
 	</main>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />

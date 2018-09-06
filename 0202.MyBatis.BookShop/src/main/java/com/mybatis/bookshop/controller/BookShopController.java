@@ -67,7 +67,7 @@ public class BookShopController {
 	
 	@RequestMapping(value="/searchBook", method=RequestMethod.GET)
 	public String searchBook(@ModelAttribute BookCondition bookCondition, Model model) {
-		System.out.println("bookCondition:"+bookCondition);
+		System.out.println(bookCondition);
 		List<Book> bookList = bookShopService.getBookByCondition(bookCondition);
 		model.addAttribute("bookList", bookList);
 		return "searchBook";

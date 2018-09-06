@@ -31,6 +31,7 @@
 	
 	<!-- 작성한 Mapper를 자동 검색 등록 -->
 	<!-- 해당 패키지에서 mapper를 검색하여 자동 등록한다. -->
+	<!--  base-package위치는 mapper의 패키지명지정, spring annotation 스캔과 비교하면 하위패키지는 검색하지 않는다. 주의 -->
 	<!-- mybatis-config.xml에 정의한 Mapper 필요없음.  -->
 	<!-- servlet-context.xml에 등록한 Bean 필요없음. -->
 	<!-- mybatis namespace 추가 필요 -->

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.mybatis.file" />
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- dbcp2를 이용한 DataSource 연결 Bean -->
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+		<beans:property name="username" value="scott"/>
+		<beans:property name="password" value="tiger"/>
+		<beans:property name="initialSize" value="9"/>
+		<beans:property name="maxIdle" value="5"/>
+	</beans:bean>
+	<!-- dbcp2를 이용한 DataSource 연결 Bean 끝-->
+	
+	<!-- ============== mybatis ================== -->
+	<!-- mybatis 에서 사용할 SqlSessionFactoryBean, SqlSessionTemplate 선언 -->
+	<!-- mybatis 에서 사용할 SqlSessionFactoryBean에 아래와 같이 DB DataSource, config.xml 파일주소를 전달 -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"/>
+		<beans:property name="configLocation" value="WEB-INF/mybatis/mybatis-config.xml"/>
+	</beans:bean>
+	<!-- mybatis 에서 사용할 SqlSessionFactoryBean에 아래와 같이 DB DataSource, config.xml 파일주소를 전달 끝-->
+	
+	<!-- mybatis 에서 사용할 SqlSessionTemplate에 위의 SqlSessionFactoryBean 을 전달 -->
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" ref="sqlSessionFactory"/>
+	</beans:bean>
+	<!-- mybatis 에서 사용할 SqlSessionTemplate에 위의 SqlSessionFactoryBean 을 전달 끝 -->
+	<!-- mybatis 에서 사용할 SqlSessionFactoryBean, SqlSessionTemplate 선언 끝 -->
+	
+<!-- 	<beans:bean id="fileMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"> -->
+<!-- 		<beans:property name="mapperInterface" value="com.mybatis.file.mapper.FileMapper" /> -->
+<!-- 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->
+<!-- 	</beans:bean> -->
+	
+	
+	<!-- multipart resolver 등록 -->
+	<beans:bean id="multipartResolver"
+	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="100000000"/>
+		<beans:property name="maxInMemorySize" value="100000000"/>
+		
+	</beans:bean>
+	<!-- multipart resolver 등록 끝-->
+	<mybatis:scan base-package="com.mybatis.file.mapper"/>
+</beans:beans>
