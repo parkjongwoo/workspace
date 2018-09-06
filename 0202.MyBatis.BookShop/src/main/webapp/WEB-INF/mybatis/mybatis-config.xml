@@ -5,16 +5,16 @@
 <configuration>
 	<typeAliases>
 		<!-- VO -->
-		<typeAlias alias="Customer" type="com.mybatis.bookshop.model.Customer"/>
-		<typeAlias alias="Book" type="com.mybatis.bookshop.model.Book"/>
-		<typeAlias alias="Order" type="com.mybatis.bookshop.model.Order"/>
-		<typeAlias alias="OrderItem" type="com.mybatis.bookshop.model.OrderItem"/>
+		<typeAlias alias="Customer" type="com.mybatis.bookshop.customer.model.Customer"/>
+		<typeAlias alias="Book" type="com.mybatis.bookshop.shop.model.Book"/>
+		<typeAlias alias="Order" type="com.mybatis.bookshop.shop.model.Order"/>
+		<typeAlias alias="OrderItem" type="com.mybatis.bookshop.shop.model.OrderItem"/>
 		
 		<!-- Condition -->		
-		<typeAlias alias="CustomerCondition" type="com.mybatis.bookshop.condition.CustomerCondition"/>
-		<typeAlias alias="BookCondition" type="com.mybatis.bookshop.condition.BookCondition"/>
+		<typeAlias alias="CustomerCondition" type="com.mybatis.bookshop.customer.condition.CustomerCondition"/>
+		<typeAlias alias="BookCondition" type="com.mybatis.bookshop.shop.condition.BookCondition"/>
 	</typeAliases>
-	<mappers>
-		<mapper resource="com/mybatis/bookshop/mapper/BookShopMapper.xml"/>
-	</mappers>
+<!-- 	<mappers> -->
+<!-- 		<mapper resource="com/mybatis/bookshop/mapper/BookShopMapper.xml"/> -->
+<!-- 	</mappers> -->
 </configuration>

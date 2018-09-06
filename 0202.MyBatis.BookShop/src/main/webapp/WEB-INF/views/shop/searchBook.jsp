@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>전화 구매 목록</title>
+<title>새 책 등록</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <link rel="stylesheet"
@@ -29,52 +29,58 @@
 	
 	<main role="main" class="inner cover">
 	<h2 class="cover-heading">책 검색</h2>	
-		<form action="/bookshop/shop/searchBook" method="get" class="form-inline">
+		<form action="/bookshop/shop/searchBook" method="get" modelAttribute="bookCondition" class="form-inline">
 			<div class="form-group">
 				<label>
-				<input type="text" name="bookName"  class="form-control ml-1 col-md-6" placeholder="책제목검색.">
+				<input type="text" name="bookName" value="${bookCondition.bookName}" class="form-control ml-1 col-md-6" placeholder="책제목검색.">
 				</label>			
 				<label>
-				<input type="text" name="publisher"  class="form-control ml-1 col-md-6" placeholder="출판사검색.">
+				<input type="text" name="publisher" value="${bookCondition.publisher}" class="form-control ml-1 col-md-6" placeholder="출판사검색.">
 				</label>			
 				<label>
-				<input type="text" name="priceMin"  class="form-control ml-1 col-md-6" placeholder="최저가검색.">
+				<input type="text" name="priceMin" value="${bookCondition.priceMin}" class="form-control ml-1 col-md-6" placeholder="최저가검색.">
 				</label>
 				-		
 				<label>
-				<input type="text" name="priceMax"  class="form-control ml-1 col-md-6" placeholder="최고가검색.">
+				<input type="text" name="priceMax" value="${bookCondition.priceMax}" class="form-control ml-1 col-md-6" placeholder="최고가검색.">
 				</label>			
 				<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="검색">
 				
 			</div>
 		</form>
-		<form action="/bookshop/customer/phone" method="post" >
+		<form action="/bookshop/shop/insertOrder" method="post" modelAttribute="order">
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th scope="col">책이름</th>
 					<th scope="col">출판사</th>
 					<th scope="col">가격</th>
+					<th scope="col">수량</th>
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach var="item" items="${phoneItems}" varStatus="s">
+				<c:forEach var="item" items="${bookList}" varStatus="s">
 					<tr>
-						<td scope="row"><input type="text" name="phones[${s.index}].id" value="${item.id}"/></td>
-						<td scope="row"><input type="text" name="phones[${s.index}].name" value="${item.name}"/></td>
-						<td scope="row"><input type="text" name="phones[${s.index}].quantity" value="${item.quantity}"/></td>						
+						<td scope="row">${item.bookName}</td>
+						<td scope="row">${item.publisher}</td>
+						<td scope="row">${item.price}</td>						
+						<td scope="row">
+							<input type="text" name="orderItemList[${s.index}].quantity" value="0">
+							<input type="hidden" name="orderItemList[${s.index}].book.bookid" value="${item.bookid}">
+							<input type="hidden" name="orderItemList[${s.index}].book.bookName" value="${item.bookName}">
+							<input type="hidden" name="orderItemList[${s.index}].book.price" value="${item.price}">
+						</td>						
 					</tr>
 				</c:forEach>
-				<c:if test="${empty phoneItems}">
+				<c:if test="${empty bookList}">
 					<tr>
 						<td colspan="3">검색결과가 없습니다.</td>
 					</tr>
 				</c:if>
 			</tbody>
 		</table>
-		<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="주문">
+		<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="검색">
 		</form>
-		
 	</main>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 	</div>

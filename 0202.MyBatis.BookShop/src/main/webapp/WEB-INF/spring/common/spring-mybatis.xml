@@ -24,10 +24,10 @@
 	<!-- mybatis 에서 사용할 SqlSessionTemplate에 위의 SqlSessionFactoryBean 을 전달 끝 -->
 	<!-- mybatis 에서 사용할 SqlSessionFactoryBean, SqlSessionTemplate 선언 끝 -->
 
-	<beans:bean id="bookShopMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<beans:property name="mapperInterface" value="com.mybatis.bookshop.mapper.BookShopMapper" />
-		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</beans:bean>
+<!-- 	<beans:bean id="bookShopMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"> -->
+<!-- 		<beans:property name="mapperInterface" value="com.mybatis.bookshop.shop.mapper.ShopMapper" /> -->
+<!-- 		<beans:property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->
+<!-- 	</beans:bean> -->
 	
 	<!-- 작성한 Mapper를 자동 검색 등록 -->
 	<!-- 해당 패키지에서 mapper를 검색하여 자동 등록한다. -->

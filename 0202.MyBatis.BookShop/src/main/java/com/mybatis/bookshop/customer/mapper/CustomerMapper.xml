@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.bookshop.customer.mapper.CustomerMapper"><!--정의해둔 interface 패키지 -->
+
+
+	<!-- List<T>를 반환받는 쿼리에 지정해줄 resultMap 정의 -->
+	<!-- type은 mybatis config 파일에 등록한 typeAliases id값으로 대체 가능(별칭등록해서 풀패키지표현이 
+		아닌 짧은 표현 사용) -->
+	<resultMap type="Customer" id="CusotomerResult">
+		<id property="customerid" column="customerid" />
+		<result property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="password" column="password" />
+		<result property="postcode" column="postcode" />
+		<result property="address" column="address" />
+		<result property="address2" column="address2" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+	</resultMap>
+	
+	<select id="findByCustomerId" parameterType="int" resultMap="CusotomerResult">
+		SELECT * FROM CUSTOMER WHERE CUSTOMERID=#{customerid}
+	</select>
+	
+	<select id="findCustomer" parameterType="Customer"
+		resultMap="CusotomerResult">
+		SELECT * FROM CUSTOMER WHERE 1=1
+		<if test="name!=null">
+			AND NAME like #{name}
+		</if>
+		<if test="address!=null">
+			AND ADDRESS like #{address}
+		</if>
+		<if test="email!=null">
+			AND EMAIL like #{email}
+		</if>
+	</select>
+
+	<select id="findCustomerByLoginInfo" parameterType="Customer"
+		resultType="Customer">
+		SELECT * FROM CUSTOMER WHERE ID=#{id} AND
+		PASSWORD=#{password}
+	</select>
+</mapper>
