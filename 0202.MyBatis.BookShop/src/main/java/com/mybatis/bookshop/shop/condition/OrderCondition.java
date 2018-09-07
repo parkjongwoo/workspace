@@ -1,14 +1,39 @@
 package com.mybatis.bookshop.shop.condition;
 
 public class OrderCondition {
-	private int orderid;
+	private Integer customerid;
+	private Integer orderid;
+	private Integer orderDateLimit;
+	
+	public int getCustomerid() {
+		return customerid;
+	}
 
-	public int getOrderid() {
+	public void setCustomerid(Integer customerid) {
+		this.customerid = customerid;
+	}
+
+	public Integer getOrderid() {
 		return orderid;
 	}
 
-	public void setOrderid(int orderid) {
+	public void setOrderid(Integer orderid) {
 		this.orderid = orderid;
 	}
+
+	public Integer getOrderDateLimit() {
+		return orderDateLimit;
+	}
+
+	public void setOrderDateLimit(Integer orderDateLimit) {
+		this.orderDateLimit = orderDateLimit;
+	}
+
+	@Override
+	public String toString() {
+		return "OrderCondition [customerid=" + customerid + ", orderid=" + orderid + ", orderDateLimit="
+				+ orderDateLimit + "]";
+	}
+
 	
 }

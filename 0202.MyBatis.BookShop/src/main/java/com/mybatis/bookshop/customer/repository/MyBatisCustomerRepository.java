@@ -52,11 +52,11 @@ public class MyBatisCustomerRepository implements CustomerRepository {
 //		return mapper.findbyName(name);
 //	}
 //
-//	@Override
-//	public int insert(Customer customer) {
-//		
-//		return mapper.save(customer);
-//	}
+	@Override
+	public int insertCustomer(Customer customer) {
+		
+		return mapper.insertCustomer(customer);
+	}
 //
 //	@Override
 //	public int update(Customer customer) {

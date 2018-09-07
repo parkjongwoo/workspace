@@ -12,4 +12,6 @@ public interface CustomerMapper {
 
 	// 동적 sql
 	List<Customer> findCustomer(CustomerCondition customerCondition);
+	
+	int insertCustomer(Customer customer);
 }

@@ -56,6 +56,16 @@ public class ShopController {
 		return "searchOrder";
 	}
 	
+	@RequestMapping(value="/orderList", method=RequestMethod.GET)
+	public String orderList(@ModelAttribute("loginInfo")Customer loginInfo, OrderCondition orderCondition, Model model) {
+		orderCondition.setCustomerid(loginInfo.getCustomerid());
+		System.out.println(orderCondition.toString());
+		
+		List<Order> orders = bookShopService.getOrderByCondition(orderCondition);
+		model.addAttribute("orderList", orders);
+		return "orderList";
+	}
+	
 	@RequestMapping(value="/bookInsertForm", method=RequestMethod.GET)
 	public String bookInsertForm() {
 		return "bookInsertForm";

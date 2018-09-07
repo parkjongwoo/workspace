@@ -10,7 +10,7 @@ public interface CustomerRepository {
 //	int selectCntById(String id);
 //	List<Customer> selectByName(String name);
 //	
-//	int insert(Customer customer);		
+	int insertCustomer(Customer customer);		
 //	int update(Customer customer);
 //	int delete(int id);
 //	

@@ -12,6 +12,7 @@
 		
 		<!-- Condition -->		
 		<typeAlias alias="CustomerCondition" type="com.mybatis.bookshop.customer.condition.CustomerCondition"/>
+		<typeAlias alias="OrderCondition" type="com.mybatis.bookshop.shop.condition.OrderCondition"/>
 		<typeAlias alias="BookCondition" type="com.mybatis.bookshop.shop.condition.BookCondition"/>
 	</typeAliases>
 <!-- 	<mappers> -->

@@ -43,4 +43,13 @@
 		SELECT * FROM CUSTOMER WHERE ID=#{id} AND
 		PASSWORD=#{password}
 	</select>
+	
+	<insert id="insertCustomer" parameterType="Customer">
+		<selectKey keyProperty="customerid" resultType="int" order="BEFORE">
+			SELECT SEQ_CUSTOMER_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CUSTOMER 
+		(CUSTOMERID, ID, NAME, PASSWORD, POSTCODE, ADDRESS, ADDRESS2, PHONE, EMAIL)
+		VALUES(#{customerid}, #{id}, #{name}, #{password}, #{postcode}, #{address}, #{address2}, #{phone}, #{email})
+	</insert>
 </mapper>

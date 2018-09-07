@@ -16,7 +16,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		int lastIndex = uri.lastIndexOf("/");
 		String action = uri.substring(lastIndex + 1);
 		System.out.println("LoginInterceptor: "+action);
-		if(action.equals("insertOrder")) {
+		if(action.equals("insertOrder") ||
+			action.equals("orderList")) {
 			Customer loginInfo = (Customer)request.getSession().getAttribute("loginInfo");
 			if(loginInfo == null) {
 //				RequestDispatcher dispatcher = request.getRequestDispatcher("/customer/loginForm");

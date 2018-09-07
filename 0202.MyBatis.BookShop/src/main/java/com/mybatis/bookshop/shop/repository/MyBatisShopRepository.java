@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.mybatis.bookshop.customer.model.Customer;
 import com.mybatis.bookshop.shop.condition.BookCondition;
+import com.mybatis.bookshop.shop.condition.OrderCondition;
 import com.mybatis.bookshop.shop.mapper.ShopMapper;
 import com.mybatis.bookshop.shop.model.Book;
 import com.mybatis.bookshop.shop.model.Order;
@@ -43,8 +44,12 @@ public class MyBatisShopRepository implements ShopRepository {
 	public Order findByOrderId(int orderid) {
 		return mapper.findByOrderId(orderid);
 	}
-	
-	
+
+	@Override
+	public List<Order> findByOrderCondition(OrderCondition condition) {
+		// TODO Auto-generated method stub
+		return mapper.findByOrderCondition(condition);
+	}
 
 	@Override
 	public int insertBookInfo(Book book) {

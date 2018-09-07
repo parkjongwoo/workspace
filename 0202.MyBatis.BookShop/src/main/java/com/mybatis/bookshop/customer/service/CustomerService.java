@@ -3,10 +3,13 @@ package com.mybatis.bookshop.customer.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mybatis.bookshop.customer.model.Customer;
 import com.mybatis.bookshop.customer.repository.CustomerRepository;
 
+@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 @Service
 public class CustomerService {
 
@@ -19,7 +22,28 @@ public class CustomerService {
 		Customer customer = customerRepository.findCustomerByLoginInfo(formInfo);
 		return customer;
 	}
-
+	@Transactional(propagation=Propagation.REQUIRED)
+	public void transactionTest() {
+		Customer c = new Customer();
+		c.setId("idSDFSD88");
+		c.setName("name");
+		c.setPassword("pass");
+		c.setPostcode("11111");
+		c.setAddress("address");
+		c.setAddress2("address2");
+		c.setPhone("phone");
+		c.setEmail("email");
+		
+		customerRepository.insertCustomer(c);
+		
+		boolean exception = false;
+		
+		if(exception) {
+			throw new RuntimeException();
+		}
+		c.setId("idSDFSD99");
+		customerRepository.insertCustomer(c);
+	}
 //	public String saveCustomer(Customer customer) {
 //	int count = customerRepository.insert(customer);
 //	

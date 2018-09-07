@@ -45,6 +45,8 @@ public class CustomerController {
 		if(loginInfo!=null) {
 			loginInfo.setPassword(null);
 			model.addAttribute("loginInfo", loginInfo);
+		}else {
+			return "loginForm";
 		}
 		return "forward:/index.jsp";
 	}
@@ -77,6 +79,10 @@ public class CustomerController {
 		model.addAttribute("phoneItems", phoneItems);
 		
 		return "phone";
+		
+//		customerService.transactionTest();
+//		
+//		return "phone";
 	}
 	@RequestMapping(value="/phone",method=RequestMethod.POST)
 	public String getOrderItem(PhoneList phoneList) {

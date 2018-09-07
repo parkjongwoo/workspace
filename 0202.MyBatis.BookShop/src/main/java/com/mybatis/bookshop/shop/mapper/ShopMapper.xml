@@ -35,7 +35,7 @@
 		<id property="orderItemid" column="orderItemid"/>
 		<result property="quantity" column="quantity"/>
 		<association property="book" column="bookid"
-			select="com.mybatis.bookshop.mapper.BookShopMapper.findByBookId"/>
+			select="com.mybatis.bookshop.shop.mapper.ShopMapper.findByBookId"/>
 	</resultMap>
 	
 	<resultMap type="Order" id="OrderResult">
@@ -45,9 +45,9 @@
 		<result property="sendYN" column="sendYN"/>
 		<result property="payOption" column="payOption"/>
 		<association property="customer" column="customerid"
-			select="com.mybatis.bookshop.mapper.BookShopMapper.findByCustomerId"/>
+			select="com.mybatis.bookshop.customer.mapper.CustomerMapper.findByCustomerId"/>
 		<collection property="orderItemList" column="orderid" 
-			ofType="OrderItem" select="com.mybatis.bookshop.mapper.BookShopMapper.findByOrderIdFromOrderItem"/>
+			ofType="OrderItem" select="com.mybatis.bookshop.shop.mapper.ShopMapper.findByOrderIdFromOrderItem"/>
 	</resultMap>
 	
 		
@@ -58,6 +58,13 @@
 	<!-- order 목록 검색 시작 -->
 	<select id="findByOrderId" parameterType="int" resultMap="OrderResult">
 		SELECT * FROM ORDERS WHERE ORDERID=#{orderid}
+	</select>
+	
+	<select id="findByOrderCondition"  parameterType="OrderCondition" resultMap="OrderResult">
+		SELECT * FROM ORDERS WHERE CUSTOMERID=#{customerid} 
+		<if test="orderDateLimit gt 0">
+		AND ORDERDATE >= ADD_MONTHS(SYSDATE,-#{orderDateLimit})
+		</if>
 	</select>
 	
 	<select id="findByOrderItemId" parameterType="int" resultMap="OrderItemResult">

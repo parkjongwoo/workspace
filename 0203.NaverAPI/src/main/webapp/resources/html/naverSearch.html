@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>책검색</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+	integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+	crossorigin="anonymous"></script>
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+	integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+	crossorigin="anonymous"></script>
+<script type="text/javascript"
+	src="https://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<script id="tableTemplate" type="text/x-jquery-tmpl">
+<tr>
+	<td scope="row" id="image"><a href="${link}"><img src="${image}" width="100" height="100"/></a></td>
+	<td scope="row" id="title"><a href="${link}">${title}</a></td>
+	<td scope="row" id="author"><a href="https://search.naver.com/search.naver?query=${author}">${author}</a></td>						
+	<td scope="row" id="publisher"><a href="https://search.naver.com/search.naver?query=${publisher}">${publisher}</a></td>						
+	<td scope="row" id="pubdate">${pubdate}</td>
+	<td scope="row" id="isbn"><a href="https://search.naver.com/search.naver?query=${isbn}">${isbn}</a></td>
+	<td scope="row" id="price">${price}</td>						
+	<td scope="row" id="description">${description}</td>						
+</tr>
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#form1").submit(function(event) {
+			event.preventDefault();
+			console.log($(this).serialize());
+			$.post({
+				url : '/search/booksearch',
+				data : $(this).serialize(),
+				success : function(res) {
+// 					console.log(JSON.stringify(res));
+					var div = $("#tableTemplate").tmpl(res.items);
+					$("#tablebody").html(div);
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	<div class="container">
+		<fieldset>
+			<form id="form1" name="form1" method="post"
+				action="/search/booksearch">
+				<div class="form-row align-items-center">
+					<div class="col-auto my-1">
+						<select class="custom-select mr-sm-2" id="category"
+							name="category">
+							<option value="" selected>상세검색</option>
+							<option value="d_titl">책제목</option>
+							<option value="d_auth">저자명</option>
+							<option value="d_cont">목차</option>
+							<option value="d_isbn">isbn검색</option>
+							<option value="d_publ">출판사</option>
+							<option value="d_dafr">출간시작일</option>
+							<option value="d_dato">출간종료일</option>
+						</select>
+					</div>
+					<div class="col-auto my-1">
+						<select class="custom-select mr-sm-2" id="sort" name="sort">
+							<option value="sim">유사도순</option>
+							<option value="date">출간일순</option>
+							<option value="count">판매량순</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="query">
+					</div>
+					<div class="col-auto my-1">
+						<button type="submit" class="form-control btn btn-primary">검색</button>
+					</div>
+				</div>
+			</form>
+		</fieldset>
+		<div class="table-responsive-xl">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">이미지</th>
+						<th scope="col">제목</th>
+						<th scope="col">지은이</th>
+						<th scope="col">출판사</th>
+						<th scope="col">출판일</th>
+						<th scope="col">ISBN</th>
+						<th scope="col">가격</th>
+						<th scope="col">설명</th>
+					</tr>
+				</thead>
+				<tbody id="tablebody"></tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

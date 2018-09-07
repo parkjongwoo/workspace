@@ -17,7 +17,7 @@
 					<a class="nav-link active" href="/bookshop/customer/logout">로그아웃</a>
 					<a class="nav-link" href="/bookshop/shop/bookInsertForm">책입력</a>
 					<a class="nav-link" href="/bookshop/shop/searchBook">책구매</a>
-					<a class="nav-link" href="#">내주문목록</a>
+					<a class="nav-link" href="/bookshop/shop/orderList">내주문목록</a>
 				</c:otherwise>
 			</c:choose>
 		</nav>

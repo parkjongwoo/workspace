@@ -5,6 +5,7 @@ import java.util.List;
 import com.mybatis.bookshop.customer.condition.CustomerCondition;
 import com.mybatis.bookshop.customer.model.Customer;
 import com.mybatis.bookshop.shop.condition.BookCondition;
+import com.mybatis.bookshop.shop.condition.OrderCondition;
 import com.mybatis.bookshop.shop.model.Book;
 import com.mybatis.bookshop.shop.model.Order;
 import com.mybatis.bookshop.shop.model.OrderItem;
@@ -24,6 +25,7 @@ public interface ShopMapper {
 	//1:N관계 테이블 조인
 	Order findByOrderId(int orderid);	
 	OrderItem findByOrderIdFromOrderItem(int orderid);
+	List<Order> findByOrderCondition(OrderCondition condition);
 	
 		
 	int insertBookInfo(Book book);

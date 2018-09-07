@@ -3,6 +3,7 @@ package com.mybatis.bookshop.shop.repository;
 import java.util.List;
 
 import com.mybatis.bookshop.shop.condition.BookCondition;
+import com.mybatis.bookshop.shop.condition.OrderCondition;
 import com.mybatis.bookshop.shop.model.Book;
 import com.mybatis.bookshop.shop.model.Order;
 import com.mybatis.bookshop.shop.model.OrderItem;
@@ -14,6 +15,7 @@ public interface ShopRepository {
 	OrderItem findByOrderItemId(int orderItemid);	
 	Order findByOrderId(int orderid);
 	
+	List<Order> findByOrderCondition(OrderCondition condition);
 	
 	int insertBookInfo(Book book);
 	
