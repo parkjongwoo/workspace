@@ -63,6 +63,7 @@ public class ShopController {
 		
 		List<Order> orders = bookShopService.getOrderByCondition(orderCondition);
 		model.addAttribute("orderList", orders);
+		model.addAttribute("orderCondition", orderCondition);
 		return "orderList";
 	}
 	

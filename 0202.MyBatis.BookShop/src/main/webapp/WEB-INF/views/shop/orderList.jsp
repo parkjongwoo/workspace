@@ -8,6 +8,19 @@
 <meta charset="UTF-8">
 <title>새 책 등록</title>
 <jsp:include page="/WEB-INF/views/include/header_head.jsp" />
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#btn_six").click(function(){
+		$("#orderDateLimit").val(6);
+		$("#bookConditionForm").submit();
+	});
+	$("#btn_three").click(function(){
+		$("#orderDateLimit").val(3);
+		$("#bookConditionForm").submit();
+	});
+	
+});
+</script>
 </head>
 <body>
 	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -15,10 +28,19 @@
 	
 	<main role="main" class="inner cover">
 	<h2 class="cover-heading">내 주문 검색</h2>	
-		<form action="/bookshop/shop/searchBook" method="get" modelAttribute="bookCondition" class="form-inline">
+		<form action="/bookshop/shop/orderList" method="get" modelAttribute="bookCondition" id="bookConditionForm" class="form-inline">
 			<div class="form-row align-items-center">
-				<div class="col-auto my-1"><button type="button" class="btn btn-primary">6개월</button></div>			
-				<div class="col-auto my-1"><button type="button" class="btn btn-primary">3개월</button></div>			
+				<c:choose>
+				<c:when test="${orderCondition.orderDateLimit==6}">
+				<div class="col-auto my-1"><button type="button" id="btn_six" class="btn-sm btn-primary">6개월</button></div>			
+				<div class="col-auto my-1"><button type="button" id="btn_three" class="btn-sm btn-secondary">3개월</button></div>
+				</c:when>
+				<c:otherwise>
+				<div class="col-auto my-1"><button type="button" id="btn_six" class="btn-sm btn-secondary">6개월</button></div>			
+				<div class="col-auto my-1"><button type="button" id="btn_three" class="btn-sm btn-primary">3개월</button></div>
+				</c:otherwise>
+				</c:choose>
+				<input type="hidden" name="orderDateLimit" id="orderDateLimit" value="${orderCondition.orderDateLimit}"> 			
 			</div>
 		</form>
 		<table class="table table-bordered">

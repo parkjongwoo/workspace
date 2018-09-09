@@ -15,43 +15,53 @@
 	
 	<main role="main" class="inner cover">
 	<h2 class="cover-heading">책 검색</h2>	
-		<form action="/bookshop/shop/searchBook" method="get" modelAttribute="bookCondition" class="form-inline">
-			<div class="form-group">
-				<label>
-				<input type="text" name="bookName" value="${bookCondition.bookName}" class="form-control ml-1 col-md-6" placeholder="책제목검색.">
-				</label>			
-				<label>
-				<input type="text" name="publisher" value="${bookCondition.publisher}" class="form-control ml-1 col-md-6" placeholder="출판사검색.">
-				</label>			
-				<label>
-				<input type="text" name="priceMin" value="${bookCondition.priceMin}" class="form-control ml-1 col-md-6" placeholder="최저가검색.">
-				</label>
-				-		
-				<label>
-				<input type="text" name="priceMax" value="${bookCondition.priceMax}" class="form-control ml-1 col-md-6" placeholder="최고가검색.">
-				</label>			
-				<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="검색">
-				
+	<fieldset>
+		<form action="/bookshop/shop/searchBook" method="get" modelAttribute="bookCondition" >
+			<div class="form-row">
+				<div class="form-group col-sm-6 col-md-6">
+				<label for="bookName">책이름검색</label>
+				<input type="text" name="bookName" id="bookName" value="${bookCondition.bookName}" class="form-control-sm col" placeholder="책제목검색.">
+				</div>
+				<div class="form-group col-sm-6 col-md-6">					
+				<label for="publisher">출판사검색</label>
+				<input type="text" name="publisher" id="publisher" value="${bookCondition.publisher}" class="form-control-sm col" placeholder="출판사검색.">
+				</div>
+			</div>
+			<div class="form-row">
+				<div class="form-group col-sm-6 col-md-6">
+				<label for="priceMin">최저가격</label>
+				<input type="text" name="priceMin" id="priceMin" value="${bookCondition.priceMin}" class="form-control-sm col" placeholder="최저가검색.">
+				</div>				
+				<div class="form-group col-sm-6 col-md-6">
+				<label for="priceMax">최고가격</label>
+				<input type="text" name="priceMax" id="priceMax" value="${bookCondition.priceMax}" class="form-control-sm col" placeholder="최고가검색.">
+				</div>					
+			</div>
+			<div class="form-row">
+				<div class="form-group col-12">
+					<input type="submit"  class="btn btn-primary form-control col-12" value="검색">
+				</div>
 			</div>
 		</form>
+	</fieldset>
 		<form action="/bookshop/shop/insertOrder" method="post" modelAttribute="order">
 		<table class="table table-bordered">
 			<thead>
-				<tr>
-					<th scope="col">책이름</th>
-					<th scope="col">출판사</th>
-					<th scope="col">가격</th>
-					<th scope="col">수량</th>
+				<tr class="d-flex">
+					<th scope="col" class="col-md-4">책이름</th>
+					<th scope="col" class="col-md-3">출판사</th>
+					<th scope="col" class="col-md-3">가격</th>
+					<th scope="col" class="col-md-2">수량</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="item" items="${bookList}" varStatus="s">
-					<tr>
-						<td scope="row">${item.bookName}</td>
-						<td scope="row">${item.publisher}</td>
-						<td scope="row">${item.price}</td>						
-						<td scope="row">
-							<input type="text" name="orderItemList[${s.index}].quantity" value="0">
+					<tr class="d-flex">
+						<td scope="row" class="col-md-4">${item.bookName}</td>
+						<td scope="row" class="col-md-3">${item.publisher}</td>
+						<td scope="row" class="col-md-3">${item.price}</td>						
+						<td scope="row" class="col-md-2">
+							<input type="text" name="orderItemList[${s.index}].quantity" value="0" class="col-12">
 							<input type="hidden" name="orderItemList[${s.index}].book.bookid" value="${item.bookid}">
 							<input type="hidden" name="orderItemList[${s.index}].book.bookName" value="${item.bookName}">
 							<input type="hidden" name="orderItemList[${s.index}].book.price" value="${item.price}">
@@ -65,7 +75,11 @@
 				</c:if>
 			</tbody>
 		</table>
-		<input type="submit"  class="btn btn-primary ml-1 col-md-2" value="검색">
+		<div class="form-row">
+			<div class="form-group col-12">
+			<input type="submit"  class="btn btn-primary col-12" value="구매">
+			</div>
+		</div>
 		</form>
 	</main>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />

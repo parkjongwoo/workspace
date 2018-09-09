@@ -99,6 +99,7 @@
 		<if test="priceMax!=null">
 		AND PRICE  &lt;= #{priceMax}
 		</if>
+		ORDER BY BOOKID DESC
 	</select>
 	
 	<insert id="insertOrder" parameterType="Order">

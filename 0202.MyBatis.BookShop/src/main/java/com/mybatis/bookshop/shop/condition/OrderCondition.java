@@ -5,6 +5,13 @@ public class OrderCondition {
 	private Integer orderid;
 	private Integer orderDateLimit;
 	
+	
+	public OrderCondition() {
+		this.customerid = null;
+		this.orderid = null;
+		this.orderDateLimit = 6; 
+	}
+
 	public int getCustomerid() {
 		return customerid;
 	}
