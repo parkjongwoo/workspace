@@ -146,8 +146,25 @@
 			<version>2.1.1</version>
 		</dependency>
 		<!-- data source 연결 방법중 dbcp library를 이용한 방법 끝 -->
-		<!-- mybatis 사용 끝 -->    
+		<!-- mybatis 사용 끝 --> 
+		<!-- ojdbc6 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>12.1.0.1-atlassian-hosted</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- ojdbc6 end-->   
 	</dependencies>
+	<!-- ojdbc6 -->
+	<repositories>
+		<repository>
+			<id>oracle</id>
+			<name>ORACLE JDBC Repository</name>
+			<url>https://maven.atlassian.com/3rdparty/</url>
+		</repository>
+	</repositories>
+	<!-- ojdbc6 end-->
     <build>
         <plugins>
             <plugin>
