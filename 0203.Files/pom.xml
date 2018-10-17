@@ -151,7 +151,6 @@
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
 			<version>12.1.0.1-atlassian-hosted</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- ojdbc6 end-->  
 		<!-- ================= file upload ===================== -->

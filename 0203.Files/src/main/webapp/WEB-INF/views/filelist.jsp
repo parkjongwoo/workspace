@@ -36,7 +36,8 @@
 						<td>${file.title}</td>
 						<td>${file.originalFileName}
 						<a href="filedownload?id=${file.id}"><i class="fas fa-download"></i></a>
-						<a href="filedelete?id=${file.id}"><i class="fas fa-trash-alt"></i></a></td>
+						<a href="filedelete?id=${file.id}"><i class="fas fa-trash-alt"></i></a>
+						<img alt="이미지" src="filedownload?id=${file.id}"></td>
 					</tr>
 				</c:forEach>
 			</tbody>

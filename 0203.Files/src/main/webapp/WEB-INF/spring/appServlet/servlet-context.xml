@@ -29,7 +29,7 @@
 	<!-- dbcp2를 이용한 DataSource 연결 Bean -->
 	<beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
 		<beans:property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl"/>
+		<beans:property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
 		<beans:property name="username" value="scott"/>
 		<beans:property name="password" value="tiger"/>
 		<beans:property name="initialSize" value="9"/>
