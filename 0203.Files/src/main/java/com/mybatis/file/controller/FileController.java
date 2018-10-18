@@ -2,7 +2,9 @@ package com.mybatis.file.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,11 +51,18 @@ public class FileController {
 		return "upload";
 	}
 	
-	@RequestMapping(value="/fileupload",method=RequestMethod.POST)
-	public String fileupload(FileForm fileForm, Model model) {
-		String resultMsg = fileService.save(fileForm);
-		model.addAttribute("message", resultMsg);
-		return "redirect:/filelist";
+	@RequestMapping(value="/fileupload",method=RequestMethod.POST, produces = "application/json;charset=utf-8")
+	public @ResponseBody Map<String,String> fileupload(FileForm fileForm, Model model) {
+		String downloadURL = fileService.save(fileForm);
+		Map<String,String> result = new HashMap<String, String>();
+		if(downloadURL == null) {
+			result.put("success", "false");
+		}else {
+			result.put("success", "true");
+			result.put("data", downloadURL);			
+		}
+		
+		return result;
 	}	
 	
 	@ResponseBody

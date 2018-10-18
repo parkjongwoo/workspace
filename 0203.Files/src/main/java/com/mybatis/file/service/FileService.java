@@ -32,7 +32,7 @@ public class FileService {
 		String originalFileName = fileForm.getUploadFile().getOriginalFilename();
 		String savedFileName = FileUtil.makeSaveFileName(originalFileName);
 		boolean uploadResult = false;
-		int result = 0;
+		int insertedId = 0;
 		UploadFile uploadFile = null;
 		
 		try {
@@ -47,11 +47,14 @@ public class FileService {
 			uploadFile.setWriter(fileForm.getWriter());
 			uploadFile.setSavedFileName(savedFileName);
 			uploadFile.setOriginalFileName(originalFileName);
-			result = fileRepository.save(uploadFile);
+			insertedId = fileRepository.save(uploadFile);
 		}		
 		 		
-		String msg = result>0?"저장되었습니다.":"저장실패했습니다.";
-		return msg;
+//		String msg = result>0?"저장되었습니다.":"저장실패했습니다.";
+//		return msg;
+		if(insertedId==0)
+			return null;
+		return FileUtil.getFileDownloadURL(insertedId);
 	}
 	
 	public List<UploadFile> findAll() {		

@@ -15,8 +15,10 @@ public class MyBatisFileRepository implements FileRepository {
 	private FileMapper fileMapper;
 	
 	@Override
-	public int save(UploadFile uploadFile) {		
-		return fileMapper.save(uploadFile);
+	public int save(UploadFile uploadFile) {
+		// insert 후 insert된 튜플의 id를 반환
+		fileMapper.save(uploadFile);
+		return uploadFile.getId();
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import org.springframework.util.FileCopyUtils;
 
 public class FileUtil {
 	//기본 파일저장 폴더
-	public static final String UPLOAD_PATH="f:\\fileuploadtest\\upload";
+	public static final String UPLOAD_PATH="d:\\fileuploadtest\\upload";
 	
 	public static String makeSaveFileName(String originalFileName) {		
 		UUID uid = UUID.randomUUID();
@@ -33,5 +33,9 @@ public class FileUtil {
 	public static File getFileFromServer(String fileName) {
 		File downLoadFile = new File(UPLOAD_PATH, fileName);
 		return downLoadFile;		
+	}
+	
+	public static String getFileDownloadURL(int id) {
+		return "/file/filedownload?id="+id;
 	}
 }

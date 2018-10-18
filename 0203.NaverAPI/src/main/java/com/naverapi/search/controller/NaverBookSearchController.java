@@ -4,13 +4,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.naverapi.search.condition.NaverSearchCondition;
+import com.naverapi.search.vo.ChildVo;
+import com.naverapi.search.vo.TestVo;
 
 /**
  * naver API 예제 및 \@ResponseBody,produces 사용한 json 응답.
@@ -55,6 +60,8 @@ public class NaverBookSearchController {
 			}
 			br.close();
 //			System.out.println(response.toString());
+			
+			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -65,5 +72,34 @@ public class NaverBookSearchController {
 			
 			return response.toString();
 		}
+	}
+	
+	@RequestMapping(value = "/getTestVo", method = RequestMethod.POST)
+	public @ResponseBody TestVo getTestVo(Model model) {
+		System.out.println("model:" + model.toString());
+		TestVo vo = new TestVo();
+		vo.setNo(1);
+		vo.setTitle("testvo 타이틀");
+		
+		ChildVo childvo1 = new ChildVo();
+		childvo1.setNo(1);
+		childvo1.setTitle("child1 타이틀");
+		
+		ChildVo childvo2 = new ChildVo();
+		childvo2.setNo(2);
+		childvo2.setTitle("child2 타이틀");
+		
+		ChildVo childvo3 = new ChildVo();
+		childvo3.setNo(3);
+		childvo3.setTitle("child3 타이틀");
+		
+		List<ChildVo> childList = new ArrayList<ChildVo>();
+		childList.add(childvo2);
+		childList.add(childvo3);
+		
+		vo.setChild(childvo1);
+		vo.setChildList(childList);
+		
+		return vo;	
 	}
 }

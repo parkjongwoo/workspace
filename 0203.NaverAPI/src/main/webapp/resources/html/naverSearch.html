@@ -46,6 +46,18 @@
 				}
 			});
 		});
+		
+		$("#form2").submit(function(event) {
+			event.preventDefault();
+			console.log("form2");
+			$.post({
+				url : '/search/getTestVo',
+				success : function(res) {
+ 					console.log(JSON.stringify(res));
+					
+				}
+			});
+		});
 	});
 </script>
 </head>
@@ -100,6 +112,12 @@
 				</thead>
 				<tbody id="tablebody"></tbody>
 			</table>
+		</div>
+		<div >
+			<form id="form2" name="form2" method="post"
+				action="/search/getTestVo">
+				<button type="submit" class="form-control btn btn-primary">테스트</button>
+			</form>
 		</div>
 	</div>
 </body>
